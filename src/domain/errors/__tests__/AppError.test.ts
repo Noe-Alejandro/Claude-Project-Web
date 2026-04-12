@@ -3,10 +3,19 @@ import { AppError, ErrorCode, getErrorMessage } from '../AppError'
 
 describe('AppError', () => {
   it('still constructs correctly when captureStackTrace is unavailable', () => {
-    const errorWithCaptureStackTrace = Error as any
-    const originalCaptureStackTrace = errorWithCaptureStackTrace.captureStackTrace
+    const errorWithCaptureStackTrace = Error as ErrorConstructor & {
+      captureStackTrace?: (targetObject: Error, constructorOpt?: unknown) => void
+    }
+    const originalDescriptor = Object.getOwnPropertyDescriptor(
+      errorWithCaptureStackTrace,
+      'captureStackTrace',
+    )
 
-    errorWithCaptureStackTrace.captureStackTrace = undefined
+    Object.defineProperty(errorWithCaptureStackTrace, 'captureStackTrace', {
+      value: undefined,
+      configurable: true,
+      writable: true,
+    })
 
     try {
       const error = new AppError('No stack helper')
@@ -15,7 +24,11 @@ describe('AppError', () => {
       expect(error.message).toBe('No stack helper')
       expect(error.code).toBe(ErrorCode.UNKNOWN)
     } finally {
-      errorWithCaptureStackTrace.captureStackTrace = originalCaptureStackTrace
+      if (originalDescriptor) {
+        Object.defineProperty(errorWithCaptureStackTrace, 'captureStackTrace', originalDescriptor)
+      } else {
+        Reflect.deleteProperty(errorWithCaptureStackTrace, 'captureStackTrace')
+      }
     }
   })
 
