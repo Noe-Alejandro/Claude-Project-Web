@@ -17,10 +17,12 @@ export default mergeConfig(
         // UI shells, pages, routing wrappers, providers, and type-only
         // files are intentionally excluded so the percentage stays
         // meaningful and doesn't punish developers for not testing wiring.
+        // Measure only the layers that contain real business logic.
+        // Infrastructure (HTTP/API wiring), presentation (UI shells), and
+        // app (router/providers) are excluded — they are composition, not logic.
         include: [
           'src/domain/**',
           'src/application/**',
-          'src/infrastructure/**',
           'src/shared/utils/**',
         ],
         exclude: [
@@ -37,7 +39,7 @@ export default mergeConfig(
           'src/application/auth/AuthProvider.tsx',
         ],
 
-        // No enforced thresholds — coverage is a helpful signal, not a gate.
+        // No enforced thresholds — coverage is a signal, not a gate.
         // Add thresholds here only when the team agrees on a baseline.
       },
     },
