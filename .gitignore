@@ -8,12 +8,23 @@ dist/
 dist-ssr/
 build/
 
-# Environment files — never commit secrets
+# Environment and secrets
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
+!.env.example
+*.local
+.npmrc
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.jks
+*.keystore
+*.secret
+*.credentials
+*.token
 
 # Logs
 logs/
@@ -24,9 +35,12 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Test coverage
+# Test coverage and caches
 coverage/
 .nyc_output/
+.eslintcache
+.vite/
+*.tsbuildinfo
 
 # Editor
 .vscode/*
@@ -42,6 +56,3 @@ coverage/
 # OS
 .DS_Store
 Thumbs.db
-
-# Vite
-*.local
