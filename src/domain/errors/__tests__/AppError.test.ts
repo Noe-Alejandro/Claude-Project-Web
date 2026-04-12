@@ -2,6 +2,25 @@ import { describe, expect, it } from 'vitest'
 import { AppError, ErrorCode, getErrorMessage } from '../AppError'
 
 describe('AppError', () => {
+  it('still constructs correctly when captureStackTrace is unavailable', () => {
+    const errorWithCaptureStackTrace = Error as ErrorConstructor & {
+      captureStackTrace?: (targetObject: Error, constructorOpt?: unknown) => void
+    }
+    const originalCaptureStackTrace = errorWithCaptureStackTrace.captureStackTrace
+
+    errorWithCaptureStackTrace.captureStackTrace = undefined
+
+    try {
+      const error = new AppError('No stack helper')
+
+      expect(error).toBeInstanceOf(Error)
+      expect(error.message).toBe('No stack helper')
+      expect(error.code).toBe(ErrorCode.UNKNOWN)
+    } finally {
+      errorWithCaptureStackTrace.captureStackTrace = originalCaptureStackTrace
+    }
+  })
+
   it('stores custom metadata on the error instance', () => {
     const details = { field: 'email' }
     const error = new AppError('Validation failed', ErrorCode.VALIDATION_ERROR, 422, details)

@@ -24,6 +24,10 @@ describe('getUserInitials', () => {
     expect(getUserInitials(mockUser)).toBe('JD')
   })
 
+  it('handles missing first and last initials', () => {
+    expect(getUserInitials({ firstName: '', lastName: '' })).toBe('')
+  })
+
   it('handles single name', () => {
     expect(getUserInitials({ firstName: 'Alice', lastName: '' })).toBe('A')
   })

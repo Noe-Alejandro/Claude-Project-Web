@@ -6,6 +6,12 @@ describe('formatDate', () => {
     expect(formatDate('2024-01-15T12:00:00.000Z')).toBe('Jan 15, 2024')
   })
 
+  it('formats a Date instance without reparsing it', () => {
+    const date = new Date('2024-01-16T12:00:00.000Z')
+
+    expect(formatDate(date)).toBe('Jan 16, 2024')
+  })
+
   it('formats a Date object with custom options', () => {
     const date = new Date('2024-01-15T13:30:00.000Z')
 
@@ -33,6 +39,10 @@ describe('formatRelativeTime', () => {
     expect(formatRelativeTime(new Date('2026-01-06T12:00:00.000Z'))).toBe('2d ago')
   })
 
+  it('accepts ISO strings as relative time input', () => {
+    expect(formatRelativeTime('2026-01-08T11:58:00.000Z')).toBe('2m ago')
+  })
+
   it('falls back to formatDate for older timestamps', () => {
     expect(formatRelativeTime(new Date('2025-12-20T12:00:00.000Z'))).toBe('Dec 20, 2025')
   })
@@ -47,6 +57,10 @@ describe('formatInitials', () => {
 
   it('handles empty string', () => {
     expect(formatInitials('')).toBe('')
+  })
+
+  it('ignores repeated spaces between names', () => {
+    expect(formatInitials('  John   Doe  ')).toBe('JD')
   })
 })
 
