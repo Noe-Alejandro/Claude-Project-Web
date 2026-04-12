@@ -4,6 +4,7 @@ import {
   LayoutDashboard,
   Settings,
   User,
+  Users,
   LogOut,
   Menu,
   X,
@@ -24,10 +25,12 @@ interface NavItem {
   label: string
   href: string
   icon: React.ReactNode
+  adminOnly?: boolean
 }
 
 const navItems: NavItem[] = [
   { label: 'Dashboard', href: ROUTES.DASHBOARD, icon: <LayoutDashboard className="h-4 w-4" /> },
+  { label: 'Users', href: ROUTES.USERS, icon: <Users className="h-4 w-4" />, adminOnly: true },
   { label: 'Profile', href: ROUTES.PROFILE, icon: <User className="h-4 w-4" /> },
   { label: 'Settings', href: ROUTES.SETTINGS, icon: <Settings className="h-4 w-4" /> },
 ]
@@ -95,27 +98,29 @@ export const AppLayout: React.FC = () => {
           <p className="px-3 py-2 text-[10px] font-semibold uppercase tracking-widest text-slate-500">
             Navigation
           </p>
-          {navItems.map((item) => (
-            <NavLink
-              key={item.href}
-              to={item.href}
-              end={item.href === ROUTES.DASHBOARD}
-              onClick={() => {
-                setSidebarOpen(false)
-              }}
-              className={({ isActive }) =>
-                cn(
-                  'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150',
-                  isActive
-                    ? 'bg-brand-500/15 text-brand-300 border border-brand-500/20'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/5',
-                )
-              }
-            >
-              {item.icon}
-              {item.label}
-            </NavLink>
-          ))}
+          {navItems
+            .filter((item) => !item.adminOnly || user.role === 'admin')
+            .map((item) => (
+              <NavLink
+                key={item.href}
+                to={item.href}
+                end={item.href === ROUTES.DASHBOARD}
+                onClick={() => {
+                  setSidebarOpen(false)
+                }}
+                className={({ isActive }) =>
+                  cn(
+                    'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150',
+                    isActive
+                      ? 'bg-brand-500/15 text-brand-300 border border-brand-500/20'
+                      : 'text-slate-400 hover:text-slate-200 hover:bg-white/5',
+                  )
+                }
+              >
+                {item.icon}
+                {item.label}
+              </NavLink>
+            ))}
         </nav>
 
         {/* User section */}
@@ -223,10 +228,14 @@ export const AppLayout: React.FC = () => {
                       Settings
                     </NavLink>
                     {user.role === 'admin' && (
-                      <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:bg-white/5 hover:text-slate-100 transition-colors">
+                      <NavLink
+                        to={ROUTES.USERS}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:bg-white/5 hover:text-slate-100 transition-colors"
+                        onClick={() => { setProfileMenuOpen(false) }}
+                      >
                         <Shield className="h-4 w-4 text-slate-500" />
                         Admin Panel
-                      </button>
+                      </NavLink>
                     )}
                   </div>
 

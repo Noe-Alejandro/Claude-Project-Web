@@ -6,6 +6,7 @@ export const ROUTES = {
   DASHBOARD: '/',
   PROFILE: '/profile',
   SETTINGS: '/settings',
+  USERS: '/users',
 
   // Errors
   NOT_FOUND: '/404',

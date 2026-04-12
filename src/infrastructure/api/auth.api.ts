@@ -1,8 +1,11 @@
 import type { User } from '@domain/models/User'
+import type { UserRole } from '@domain/models/User'
 import type { LoginCredentials } from '@domain/models/Auth'
+import { decodeJwtPayload } from '@domain/models/Auth'
 import { AppError, ErrorCode } from '@domain/errors/AppError'
 import { appConfig } from '@app/config'
 import { httpClient } from '@infrastructure/http/httpClient'
+import { tokenStorage } from '@infrastructure/storage/tokenStorage'
 
 // ─── Response contracts (must match backend DTOs) ────────────────────────────
 
@@ -20,6 +23,30 @@ export interface RefreshResponseDto {
 export interface MeResponseDto {
   user: User
 }
+
+// Backend UserResponse shape (camelCase enum via JsonStringEnumConverter)
+interface BackendUserResponse {
+  id: string
+  email: string
+  firstName: string
+  lastName: string
+  fullName: string
+  role: string // "admin" | "manager" | "user" | "viewer"
+  avatarUrl: string | null
+  createdAt: string
+  lastLoginAt: string | null
+}
+
+const mapBackendUser = (u: BackendUserResponse): User => ({
+  id: u.id,
+  email: u.email,
+  firstName: u.firstName,
+  lastName: u.lastName,
+  role: u.role as UserRole,
+  avatarUrl: u.avatarUrl,
+  createdAt: u.createdAt,
+  lastLoginAt: u.lastLoginAt,
+})
 
 // ─── Mock helpers (development only) ─────────────────────────────────────────
 
@@ -56,13 +83,10 @@ const mockUsers: Record<string, { password: string; user: User }> = {
   },
 }
 
-// In-memory user — lost on module reload.
-// sessionStorage email is used as the persistent "refresh token" equivalent in mock mode.
 let mockSessionUser: User | null = null
 
 const getMockUser = (): User | null => {
   if (mockSessionUser) return mockSessionUser
-  // Restore from sessionStorage (simulates refresh-token cookie on page reload)
   const email = sessionStorage.getItem(MOCK_SESSION_KEY)
   if (email) {
     mockSessionUser = mockUsers[email]?.user ?? null
@@ -76,7 +100,7 @@ const createMockToken = (userId: string): string => {
     JSON.stringify({
       sub: userId,
       iat: Math.floor(Date.now() / 1000),
-      exp: Math.floor(Date.now() / 1000) + 900, // 15 min
+      exp: Math.floor(Date.now() / 1000) + 900,
     }),
   )
   return `${header}.${payload}.mock_sig_not_for_production`
@@ -101,12 +125,15 @@ export const authApi = {
       }
     }
 
-    const { data } = await httpClient.post<LoginResponseDto>('/auth/login', {
-      email: credentials.email,
-      password: credentials.password,
-      rememberMe: credentials.rememberMe,
-    })
-    return data
+    const { data } = await httpClient.post<{ accessToken: string; expiresIn: number; user: BackendUserResponse }>(
+      '/auth/login',
+      { email: credentials.email, password: credentials.password },
+    )
+    return {
+      accessToken: data.accessToken,
+      expiresIn: data.expiresIn,
+      user: mapBackendUser(data.user),
+    }
   },
 
   async logout(): Promise<void> {
@@ -116,7 +143,8 @@ export const authApi = {
       sessionStorage.removeItem(MOCK_SESSION_KEY)
       return
     }
-    await httpClient.post('/auth/logout')
+    // Stateless JWT backend — no logout endpoint. Client-side cleanup is handled
+    // by AuthService.logout() regardless of this call resolving.
   },
 
   async refreshToken(): Promise<RefreshResponseDto> {
@@ -132,8 +160,9 @@ export const authApi = {
       }
     }
 
-    const { data } = await httpClient.post<RefreshResponseDto>('/auth/refresh')
-    return data
+    // No refresh endpoint on this backend. Signal session expired so the
+    // httpClient interceptor's catch block clears state and redirects to login.
+    throw new AppError('No refresh endpoint — session expired', ErrorCode.SESSION_EXPIRED, 401)
   },
 
   async getMe(): Promise<MeResponseDto> {
@@ -146,7 +175,18 @@ export const authApi = {
       return { user }
     }
 
-    const { data } = await httpClient.get<MeResponseDto>('/auth/me')
-    return data
+    // Decode the stored JWT to get the user ID, then fetch from /users/{id}
+    const token = tokenStorage.getAccessToken()
+    if (!token) {
+      throw new AppError('No token', ErrorCode.UNAUTHORIZED, 401)
+    }
+
+    const payload = decodeJwtPayload(token)
+    if (!payload?.sub) {
+      throw new AppError('Invalid token', ErrorCode.UNAUTHORIZED, 401)
+    }
+
+    const { data } = await httpClient.get<BackendUserResponse>(`/users/${payload.sub}`)
+    return { user: mapBackendUser(data) }
   },
 }

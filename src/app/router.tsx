@@ -9,7 +9,16 @@ import { Spinner } from '@presentation/components/ui/Spinner'
 
 const LoginPage = lazy(() => import('@presentation/pages/auth/LoginPage'))
 const DashboardPage = lazy(() => import('@presentation/pages/dashboard/DashboardPage'))
+const ProfilePage = lazy(() => import('@presentation/pages/profile/ProfilePage'))
+const SettingsPage = lazy(() => import('@presentation/pages/settings/SettingsPage'))
+const UsersPage = lazy(() => import('@presentation/pages/admin/UsersPage'))
 const NotFoundPage = lazy(() => import('@presentation/pages/errors/NotFoundPage'))
+
+const PageFallback = (
+  <div className="min-h-[60vh] flex items-center justify-center">
+    <Spinner size="lg" className="text-brand-500" />
+  </div>
+)
 
 export const router = createBrowserRouter([
   {
@@ -20,17 +29,7 @@ export const router = createBrowserRouter([
         children: [
           {
             path: ROUTES.LOGIN,
-            element: (
-              <Suspense
-                fallback={
-                  <div className="min-h-[60vh] flex items-center justify-center">
-                    <Spinner size="lg" className="text-brand-500" />
-                  </div>
-                }
-              >
-                <LoginPage />
-              </Suspense>
-            ),
+            element: <Suspense fallback={PageFallback}><LoginPage /></Suspense>,
           },
         ],
       },
@@ -44,43 +43,25 @@ export const router = createBrowserRouter([
         children: [
           {
             path: ROUTES.DASHBOARD,
-            element: (
-              <Suspense
-                fallback={
-                  <div className="min-h-[60vh] flex items-center justify-center">
-                    <Spinner size="lg" className="text-brand-500" />
-                  </div>
-                }
-              >
-                <DashboardPage />
-              </Suspense>
-            ),
+            element: <Suspense fallback={PageFallback}><DashboardPage /></Suspense>,
           },
           {
             path: ROUTES.PROFILE,
-            element: (
-              <div className="p-6 flex items-center justify-center min-h-[50vh]">
-                <div className="text-center">
-                  <p className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-brand-600">
-                    Profile
-                  </p>
-                  <p className="mt-2 text-slate-400 text-sm">This page is under construction.</p>
-                </div>
-              </div>
-            ),
+            element: <Suspense fallback={PageFallback}><ProfilePage /></Suspense>,
           },
           {
             path: ROUTES.SETTINGS,
-            element: (
-              <div className="p-6 flex items-center justify-center min-h-[50vh]">
-                <div className="text-center">
-                  <p className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-brand-600">
-                    Settings
-                  </p>
-                  <p className="mt-2 text-slate-400 text-sm">This page is under construction.</p>
-                </div>
-              </div>
-            ),
+            element: <Suspense fallback={PageFallback}><SettingsPage /></Suspense>,
+          },
+          // Admin-only routes
+          {
+            element: <ProtectedRoute allowedRoles={['admin']} />,
+            children: [
+              {
+                path: ROUTES.USERS,
+                element: <Suspense fallback={PageFallback}><UsersPage /></Suspense>,
+              },
+            ],
           },
         ],
       },
@@ -88,16 +69,6 @@ export const router = createBrowserRouter([
   },
   {
     path: '*',
-    element: (
-      <Suspense
-        fallback={
-          <div className="min-h-[60vh] flex items-center justify-center">
-            <Spinner size="lg" className="text-brand-500" />
-          </div>
-        }
-      >
-        <NotFoundPage />
-      </Suspense>
-    ),
+    element: <Suspense fallback={PageFallback}><NotFoundPage /></Suspense>,
   },
 ])
