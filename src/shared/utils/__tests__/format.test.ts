@@ -62,6 +62,14 @@ describe('formatInitials', () => {
   it('ignores repeated spaces between names', () => {
     expect(formatInitials('  John   Doe  ')).toBe('JD')
   })
+
+  it('defensively handles split parts without a first character', () => {
+    const oddInput = {
+      split: () => [{}, 'Doe'],
+    } as unknown as string
+
+    expect(formatInitials(oddInput)).toBe('D')
+  })
 })
 
 describe('truncate', () => {
