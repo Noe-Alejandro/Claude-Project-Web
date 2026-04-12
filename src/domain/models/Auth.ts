@@ -19,11 +19,11 @@ export interface AuthSession {
 }
 
 export interface JwtPayload {
-  readonly sub: string       // User ID
+  readonly sub: string // User ID
   readonly email: string
   readonly role: string
-  readonly iat: number       // Issued at
-  readonly exp: number       // Expiration
+  readonly iat: number // Issued at
+  readonly exp: number // Expiration
 }
 
 // Decode a JWT payload without verifying signature (verification is server-side)
@@ -40,5 +40,4 @@ export const decodeJwtPayload = (token: string): JwtPayload | null => {
   }
 }
 
-export const isTokenExpired = (expiresAt: number): boolean =>
-  Date.now() >= expiresAt - 30_000 // 30s buffer before actual expiry
+export const isTokenExpired = (expiresAt: number): boolean => Date.now() >= expiresAt - 30_000 // 30s buffer before actual expiry

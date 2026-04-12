@@ -33,29 +33,13 @@ export const handleHttpError = (error: AxiosError): AppError => {
         responseData?.errors ? { fields: responseData.errors } : null,
       )
     case 401:
-      return new AppError(
-        serverMessage ?? 'Unauthorized',
-        ErrorCode.UNAUTHORIZED,
-        401,
-      )
+      return new AppError(serverMessage ?? 'Unauthorized', ErrorCode.UNAUTHORIZED, 401)
     case 403:
-      return new AppError(
-        serverMessage ?? 'Forbidden',
-        ErrorCode.FORBIDDEN,
-        403,
-      )
+      return new AppError(serverMessage ?? 'Forbidden', ErrorCode.FORBIDDEN, 403)
     case 404:
-      return new AppError(
-        serverMessage ?? 'Resource not found',
-        ErrorCode.NOT_FOUND,
-        404,
-      )
+      return new AppError(serverMessage ?? 'Resource not found', ErrorCode.NOT_FOUND, 404)
     case 409:
-      return new AppError(
-        serverMessage ?? 'Conflict',
-        ErrorCode.CONFLICT,
-        409,
-      )
+      return new AppError(serverMessage ?? 'Conflict', ErrorCode.CONFLICT, 409)
     case 422:
       return new AppError(
         serverMessage ?? 'Validation failed',
@@ -64,18 +48,10 @@ export const handleHttpError = (error: AxiosError): AppError => {
         responseData?.errors ? { fields: responseData.errors } : null,
       )
     case 429:
-      return new AppError(
-        serverMessage ?? 'Too many requests',
-        ErrorCode.RATE_LIMITED,
-        429,
-      )
+      return new AppError(serverMessage ?? 'Too many requests', ErrorCode.RATE_LIMITED, 429)
     default:
       if (status >= 500) {
-        return new AppError(
-          'Server error — please try again later',
-          ErrorCode.SERVER_ERROR,
-          status,
-        )
+        return new AppError('Server error — please try again later', ErrorCode.SERVER_ERROR, status)
       }
       return new AppError(
         serverMessage ?? 'An unexpected error occurred',

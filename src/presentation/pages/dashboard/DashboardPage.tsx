@@ -122,8 +122,7 @@ const DashboardPage: React.FC = () => {
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <h1 className="text-2xl font-bold text-slate-100 tracking-tight">
-            Good {getGreeting()},{' '}
-            <span className="text-brand-400">{user.firstName}</span>
+            Good {getGreeting()}, <span className="text-brand-400">{user.firstName}</span>
           </h1>
           <p className="mt-1 text-sm text-slate-400">
             Here's what's happening with your workspace today.
@@ -181,9 +180,7 @@ const DashboardPage: React.FC = () => {
             />
             <InfoRow
               label="Last login"
-              value={
-                user.lastLoginAt ? formatRelativeTime(user.lastLoginAt) : 'First login'
-              }
+              value={user.lastLoginAt ? formatRelativeTime(user.lastLoginAt) : 'First login'}
             />
 
             <div className="pt-4 border-t border-white/8">
@@ -249,8 +246,7 @@ const ActivityRow: React.FC<{ activity: Activity }> = ({ activity }) => (
     </div>
     <div className="flex-1 min-w-0">
       <p className="text-sm text-slate-300">
-        <span className="font-medium text-slate-200">{activity.actor}</span>{' '}
-        {activity.action}{' '}
+        <span className="font-medium text-slate-200">{activity.actor}</span> {activity.action}{' '}
         <span className="font-medium text-brand-400">{activity.target}</span>
       </p>
       <p className="flex items-center gap-1 text-xs text-slate-500 mt-0.5">
@@ -270,7 +266,10 @@ const InfoRow: React.FC<{ label: string; value: React.ReactNode }> = ({ label, v
 
 // Mini sparkline chart (pure CSS/SVG — no chart library needed for this)
 const MiniChart: React.FC = () => {
-  const points = [65, 72, 58, 80, 55, 68, 74, 62, 78, 52, 70, 65, 72, 68, 75, 60, 82, 70, 65, 78, 58, 72, 68, 74, 62, 80, 65, 70, 55, 72]
+  const points = [
+    65, 72, 58, 80, 55, 68, 74, 62, 78, 52, 70, 65, 72, 68, 75, 60, 82, 70, 65, 78, 58, 72, 68, 74,
+    62, 80, 65, 70, 55, 72,
+  ]
   const max = Math.max(...points)
   const min = Math.min(...points)
   const normalize = (v: number) => ((v - min) / (max - min)) * 80 + 10
@@ -295,7 +294,14 @@ const MiniChart: React.FC = () => {
           </linearGradient>
         </defs>
         <path d={areaD} fill="url(#chartGrad)" />
-        <path d={pathD} stroke="#6366f1" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        <path
+          d={pathD}
+          stroke="#6366f1"
+          strokeWidth="2"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </svg>
       <div className="absolute bottom-0 left-0 right-0 flex justify-between text-[10px] text-slate-600 px-1">
         <span>30d ago</span>

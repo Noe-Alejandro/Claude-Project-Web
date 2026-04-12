@@ -23,7 +23,11 @@ describe('Button', () => {
     const user = userEvent.setup()
     const onClick = vi.fn()
 
-    render(<Button disabled onClick={onClick}>Disabled</Button>)
+    render(
+      <Button disabled onClick={onClick}>
+        Disabled
+      </Button>,
+    )
     const button = screen.getByRole('button')
 
     expect(button).toBeDisabled()
@@ -35,7 +39,11 @@ describe('Button', () => {
     const user = userEvent.setup()
     const onClick = vi.fn()
 
-    render(<Button isLoading onClick={onClick}>Save</Button>)
+    render(
+      <Button isLoading onClick={onClick}>
+        Save
+      </Button>,
+    )
     const button = screen.getByRole('button')
 
     expect(button).toBeDisabled()

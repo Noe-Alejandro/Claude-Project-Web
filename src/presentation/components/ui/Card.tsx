@@ -52,10 +52,7 @@ export const CardTitle: React.FC<CardTitleProps> = ({
   as: Tag = 'h2',
   ...props
 }) => (
-  <Tag
-    className={cn('text-xl font-semibold text-slate-100 tracking-tight', className)}
-    {...props}
-  >
+  <Tag className={cn('text-xl font-semibold text-slate-100 tracking-tight', className)} {...props}>
     {children}
   </Tag>
 )

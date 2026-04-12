@@ -8,7 +8,7 @@ import { httpClient } from '@infrastructure/http/httpClient'
 
 export interface LoginResponseDto {
   accessToken: string
-  expiresIn: number   // seconds
+  expiresIn: number // seconds
   user: User
 }
 

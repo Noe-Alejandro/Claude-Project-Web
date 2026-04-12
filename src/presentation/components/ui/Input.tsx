@@ -17,20 +17,19 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label
-            htmlFor={inputId}
-            className="text-sm font-medium text-slate-300"
-          >
+          <label htmlFor={inputId} className="text-sm font-medium text-slate-300">
             {label}
-            {props.required && <span className="text-red-400 ml-1" aria-hidden>*</span>}
+            {props.required && (
+              <span className="text-red-400 ml-1" aria-hidden>
+                *
+              </span>
+            )}
           </label>
         )}
 
         <div className="relative flex items-center">
           {leftIcon && (
-            <span className="absolute left-3 text-slate-500 pointer-events-none">
-              {leftIcon}
-            </span>
+            <span className="absolute left-3 text-slate-500 pointer-events-none">{leftIcon}</span>
           )}
 
           <input
@@ -60,15 +59,15 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
 
-          {rightElement && (
-            <span className="absolute right-3 text-slate-500">
-              {rightElement}
-            </span>
-          )}
+          {rightElement && <span className="absolute right-3 text-slate-500">{rightElement}</span>}
         </div>
 
         {hasError && (
-          <p id={`${inputId}-error`} role="alert" className="text-xs text-red-400 flex items-center gap-1">
+          <p
+            id={`${inputId}-error`}
+            role="alert"
+            className="text-xs text-red-400 flex items-center gap-1"
+          >
             {errorMessage}
           </p>
         )}

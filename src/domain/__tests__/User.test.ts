@@ -1,10 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import {
-  getUserFullName,
-  getUserInitials,
-  hasRole,
-  isAdmin,
-} from '../models/User'
+import { getUserFullName, getUserInitials, hasRole, isAdmin } from '../models/User'
 import type { User } from '../models/User'
 
 const mockUser: User = {

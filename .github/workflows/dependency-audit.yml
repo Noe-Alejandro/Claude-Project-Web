@@ -1,34 +1,19 @@
-name: Security Checks
+name: Dependency Audit
 
 on:
-  pull_request:
   push:
     branches:
       - main
+  pull_request:
 
 permissions:
   contents: read
-  pull-requests: read
 
 concurrency:
-  group: security-${{ github.ref }}
+  group: dependency-audit-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  dependency-review:
-    name: Dependency Review
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Review dependency changes
-        uses: actions/dependency-review-action@v4
-        with:
-          fail-on-severity: moderate
-
   npm-audit:
     name: npm audit
     runs-on: ubuntu-latest

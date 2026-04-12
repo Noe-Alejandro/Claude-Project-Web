@@ -10,8 +10,7 @@ export const queryKeys = {
   },
   users: {
     all: ['users'] as const,
-    list: (filters?: Record<string, unknown>) =>
-      [...queryKeys.users.all, 'list', filters] as const,
+    list: (filters?: Record<string, unknown>) => [...queryKeys.users.all, 'list', filters] as const,
     detail: (id: string) => [...queryKeys.users.all, 'detail', id] as const,
   },
 } as const

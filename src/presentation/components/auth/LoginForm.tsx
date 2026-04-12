@@ -11,10 +11,7 @@ import { useErrorHandler } from '@shared/hooks/useErrorHandler'
 // ─── Schema ───────────────────────────────────────────────────────────────────
 
 const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, 'Email is required')
-    .email('Please enter a valid email address'),
+  email: z.string().min(1, 'Email is required').email('Please enter a valid email address'),
   password: z
     .string()
     .min(1, 'Password is required')
@@ -54,11 +51,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isLoading, error
       aria-label="Sign in form"
       className="space-y-5"
     >
-      {error != null && (
-        <Alert variant="error">
-          {getDisplayMessage(error)}
-        </Alert>
-      )}
+      {error != null && <Alert variant="error">{getDisplayMessage(error)}</Alert>}
 
       <Input
         label="Email address"
@@ -115,12 +108,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isLoading, error
         </button>
       </div>
 
-      <Button
-        type="submit"
-        fullWidth
-        size="lg"
-        isLoading={isLoading}
-      >
+      <Button type="submit" fullWidth size="lg" isLoading={isLoading}>
         {isLoading ? 'Signing in…' : 'Sign in'}
       </Button>
 
@@ -129,12 +117,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isLoading, error
         <p className="text-xs text-slate-400 font-medium mb-1.5">Demo credentials</p>
         <div className="space-y-1">
           <p className="text-xs text-slate-500 font-mono">
-            <span className="text-slate-400">admin@example.com</span>
-            {' '}/ password123
+            <span className="text-slate-400">admin@example.com</span> / password123
           </p>
           <p className="text-xs text-slate-500 font-mono">
-            <span className="text-slate-400">user@example.com</span>
-            {' '}/ password123
+            <span className="text-slate-400">user@example.com</span> / password123
           </p>
         </div>
       </div>

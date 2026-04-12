@@ -170,10 +170,7 @@ export const AppLayout: React.FC = () => {
 
             {profileMenuOpen && (
               <>
-                <div
-                  className="fixed inset-0 z-10"
-                  onClick={() => setProfileMenuOpen(false)}
-                />
+                <div className="fixed inset-0 z-10" onClick={() => setProfileMenuOpen(false)} />
                 <div className="absolute right-0 top-full mt-2 w-56 z-20 rounded-xl border border-white/8 bg-slate-900 shadow-glass overflow-hidden animate-fade-in">
                   {/* User info header */}
                   <div className="px-4 py-3 border-b border-white/8">
