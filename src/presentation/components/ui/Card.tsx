@@ -34,7 +34,7 @@ export const Card: React.FC<CardProps> = ({
   </div>
 )
 
-interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
+type CardHeaderProps = React.HTMLAttributes<HTMLDivElement>
 
 export const CardHeader: React.FC<CardHeaderProps> = ({ children, className, ...props }) => (
   <div className={cn('mb-6', className)} {...props}>

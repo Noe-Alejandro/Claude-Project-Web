@@ -77,7 +77,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isLoading, error
             type="button"
             tabIndex={-1}
             aria-label={showPassword ? 'Hide password' : 'Show password'}
-            onClick={() => setShowPassword((v) => !v)}
+            onClick={() => {
+              setShowPassword((v) => !v)
+            }}
             className="text-slate-500 hover:text-slate-300 transition-colors"
           >
             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}

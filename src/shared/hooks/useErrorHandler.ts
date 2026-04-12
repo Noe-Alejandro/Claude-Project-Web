@@ -19,6 +19,6 @@ export const useErrorHandler = (): UseErrorHandlerResult => {
 
   return {
     getDisplayMessage,
-    isAppError: AppError.isAppError,
+    isAppError: (error: unknown): error is AppError => AppError.isAppError(error),
   }
 }

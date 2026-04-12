@@ -62,7 +62,13 @@ export class ErrorBoundary extends React.Component<Props, State> {
               >
                 Try again
               </Button>
-              <Button onClick={() => window.location.reload()}>Reload page</Button>
+              <Button
+                onClick={() => {
+                  window.location.reload()
+                }}
+              >
+                Reload page
+              </Button>
             </div>
           </div>
         </div>

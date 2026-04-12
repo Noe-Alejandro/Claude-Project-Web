@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import type { LoginCredentials } from '@domain/models/Auth'
+import type { User } from '@domain/models/User'
 import { AppError } from '@domain/errors/AppError'
 import { authService } from './AuthService'
 
@@ -8,10 +9,12 @@ import { authService } from './AuthService'
  * Server state (current user) lives in AuthContext + authService.fetchCurrentUser.
  */
 
-export const useLoginMutation = (onSuccess: (user: import('@domain/models/User').User) => void) =>
+export const useLoginMutation = (onSuccess: (user: User) => void) =>
   useMutation({
     mutationFn: (credentials: LoginCredentials) => authService.login(credentials),
-    onSuccess: (result) => onSuccess(result.user),
+    onSuccess: (result) => {
+      onSuccess(result.user)
+    },
     onError: (error) => {
       // Errors are surfaced via the mutation's `error` property in the component
       if (!AppError.isAppError(error)) {

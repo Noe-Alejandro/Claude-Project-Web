@@ -13,6 +13,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ label, helperText, errorMessage, leftIcon, rightElement, className, id, ...props }, ref) => {
     const inputId = id ?? label?.toLowerCase().replace(/\s+/g, '-')
     const hasError = Boolean(errorMessage)
+    const errorId = inputId ? `${inputId}-error` : undefined
+    const hintId = inputId ? `${inputId}-hint` : undefined
 
     return (
       <div className="flex flex-col gap-1.5">
@@ -36,9 +38,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             id={inputId}
             aria-invalid={hasError}
-            aria-describedby={
-              hasError ? `${inputId}-error` : helperText ? `${inputId}-hint` : undefined
-            }
+            aria-describedby={hasError ? errorId : helperText ? hintId : undefined}
             className={cn(
               // Base
               'w-full rounded-lg border bg-white/5 text-slate-100 placeholder:text-slate-500',
@@ -63,17 +63,13 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         </div>
 
         {hasError && (
-          <p
-            id={`${inputId}-error`}
-            role="alert"
-            className="text-xs text-red-400 flex items-center gap-1"
-          >
+          <p id={errorId} role="alert" className="text-xs text-red-400 flex items-center gap-1">
             {errorMessage}
           </p>
         )}
 
         {!hasError && helperText && (
-          <p id={`${inputId}-hint`} className="text-xs text-slate-500">
+          <p id={hintId} className="text-xs text-slate-500">
             {helperText}
           </p>
         )}

@@ -39,7 +39,7 @@ export const AppLayout: React.FC = () => {
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
 
   const logoutMutation = useLogoutMutation(() => {
-    void navigate(ROUTES.LOGIN, { replace: true })
+    navigate(ROUTES.LOGIN, { replace: true })
   })
 
   if (!user) return null
@@ -50,7 +50,9 @@ export const AppLayout: React.FC = () => {
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-20 bg-black/60 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
+          onClick={() => {
+            setSidebarOpen(false)
+          }}
         />
       )}
 
@@ -80,7 +82,9 @@ export const AppLayout: React.FC = () => {
           <span className="text-slate-100 font-semibold text-sm tracking-tight">EnterpriseApp</span>
           <button
             className="ml-auto lg:hidden text-slate-400 hover:text-slate-200"
-            onClick={() => setSidebarOpen(false)}
+            onClick={() => {
+              setSidebarOpen(false)
+            }}
           >
             <X className="h-5 w-5" />
           </button>
@@ -96,7 +100,9 @@ export const AppLayout: React.FC = () => {
               key={item.href}
               to={item.href}
               end={item.href === ROUTES.DASHBOARD}
-              onClick={() => setSidebarOpen(false)}
+              onClick={() => {
+                setSidebarOpen(false)
+              }}
               className={({ isActive }) =>
                 cn(
                   'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150',
@@ -130,7 +136,9 @@ export const AppLayout: React.FC = () => {
         <header className="h-16 flex items-center gap-4 px-4 sm:px-6 border-b border-white/8 bg-slate-900/50 backdrop-blur-sm shrink-0 sticky top-0 z-10">
           <button
             className="lg:hidden text-slate-400 hover:text-slate-200 p-1"
-            onClick={() => setSidebarOpen(true)}
+            onClick={() => {
+              setSidebarOpen(true)
+            }}
             aria-label="Open sidebar"
           >
             <Menu className="h-5 w-5" />
@@ -150,7 +158,9 @@ export const AppLayout: React.FC = () => {
           {/* Profile dropdown */}
           <div className="relative">
             <button
-              onClick={() => setProfileMenuOpen((o) => !o)}
+              onClick={() => {
+                setProfileMenuOpen((o) => !o)
+              }}
               className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors"
             >
               <Avatar user={user} size="sm" />
@@ -170,7 +180,12 @@ export const AppLayout: React.FC = () => {
 
             {profileMenuOpen && (
               <>
-                <div className="fixed inset-0 z-10" onClick={() => setProfileMenuOpen(false)} />
+                <div
+                  className="fixed inset-0 z-10"
+                  onClick={() => {
+                    setProfileMenuOpen(false)
+                  }}
+                />
                 <div className="absolute right-0 top-full mt-2 w-56 z-20 rounded-xl border border-white/8 bg-slate-900 shadow-glass overflow-hidden animate-fade-in">
                   {/* User info header */}
                   <div className="px-4 py-3 border-b border-white/8">
@@ -190,7 +205,9 @@ export const AppLayout: React.FC = () => {
                     <NavLink
                       to={ROUTES.PROFILE}
                       className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:bg-white/5 hover:text-slate-100 transition-colors"
-                      onClick={() => setProfileMenuOpen(false)}
+                      onClick={() => {
+                        setProfileMenuOpen(false)
+                      }}
                     >
                       <User className="h-4 w-4 text-slate-500" />
                       Your Profile
@@ -198,7 +215,9 @@ export const AppLayout: React.FC = () => {
                     <NavLink
                       to={ROUTES.SETTINGS}
                       className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:bg-white/5 hover:text-slate-100 transition-colors"
-                      onClick={() => setProfileMenuOpen(false)}
+                      onClick={() => {
+                        setProfileMenuOpen(false)
+                      }}
                     >
                       <Settings className="h-4 w-4 text-slate-500" />
                       Settings

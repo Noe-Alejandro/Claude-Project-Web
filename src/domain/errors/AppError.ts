@@ -39,8 +39,13 @@ export class AppError extends Error {
     this.details = details
 
     // Maintains proper stack trace in V8
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, AppError)
+    const captureStackTrace = (
+      Error as ErrorConstructor & {
+        captureStackTrace?: (targetObject: Error, constructorOpt?: unknown) => void
+      }
+    ).captureStackTrace
+    if (typeof captureStackTrace === 'function') {
+      captureStackTrace(this, AppError)
     }
   }
 

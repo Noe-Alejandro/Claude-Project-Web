@@ -1,10 +1,9 @@
-import React, { createContext, useCallback, useEffect, useReducer } from 'react'
+import React, { useCallback, useEffect, useReducer } from 'react'
 import type { User } from '@domain/models/User'
 import type { LoginCredentials } from '@domain/models/Auth'
 import { AppError } from '@domain/errors/AppError'
 import { authService } from './AuthService'
-
-// ─── State ────────────────────────────────────────────────────────────────────
+import { AuthContext } from './AuthContext'
 
 type AuthStatus = 'initializing' | 'authenticated' | 'unauthenticated'
 
@@ -47,24 +46,6 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
   }
 }
 
-// ─── Context ──────────────────────────────────────────────────────────────────
-
-interface AuthContextValue {
-  status: AuthStatus
-  user: User | null
-  isAuthenticated: boolean
-  isInitializing: boolean
-  error: AppError | null
-  login: (credentials: LoginCredentials) => Promise<void>
-  logout: () => Promise<void>
-  clearError: () => void
-}
-
-export const AuthContext = createContext<AuthContextValue | null>(null)
-AuthContext.displayName = 'AuthContext'
-
-// ─── Provider ─────────────────────────────────────────────────────────────────
-
 interface AuthProviderProps {
   children: React.ReactNode
 }
@@ -72,7 +53,6 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState)
 
-  // On mount: attempt to restore session via silent refresh / stored cookie
   useEffect(() => {
     let cancelled = false
 
@@ -88,10 +68,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     void initialize()
 
-    // Listen for session expiry events dispatched by the HTTP interceptor
     const onSessionExpired = (): void => {
       if (!cancelled) dispatch({ type: 'LOGOUT' })
     }
+
     window.addEventListener('auth:session-expired', onSessionExpired)
 
     return () => {

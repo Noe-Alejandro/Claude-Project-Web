@@ -89,7 +89,7 @@ export const authApi = {
     if (appConfig.useMockApi) {
       await delay(800)
       const record = mockUsers[credentials.email]
-      if (!record || record.password !== credentials.password) {
+      if (record?.password !== credentials.password) {
         throw new AppError('Invalid email or password', ErrorCode.INVALID_CREDENTIALS, 401)
       }
       mockSessionUser = record.user

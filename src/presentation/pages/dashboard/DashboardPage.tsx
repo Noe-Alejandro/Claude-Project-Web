@@ -279,14 +279,20 @@ const MiniChart: React.FC = () => {
   const step = width / (points.length - 1)
 
   const pathD = points
-    .map((p, i) => `${i === 0 ? 'M' : 'L'} ${i * step} ${height - normalize(p)}`)
+    .map((p, i) => `${i === 0 ? 'M' : 'L'} ${String(i * step)} ${String(height - normalize(p))}`)
     .join(' ')
 
-  const areaD = `${pathD} L ${(points.length - 1) * step} ${height} L 0 ${height} Z`
+  const areaD = `${pathD} L ${String((points.length - 1) * step)} ${String(height)} L ${String(
+    0,
+  )} ${String(height)} Z`
 
   return (
     <div className="w-full h-24 relative">
-      <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" className="w-full h-full">
+      <svg
+        viewBox={`0 0 ${String(width)} ${String(height)}`}
+        preserveAspectRatio="none"
+        className="w-full h-full"
+      >
         <defs>
           <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#6366f1" stopOpacity="0.3" />

@@ -1,7 +1,7 @@
 import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { AuthProvider } from '@application/auth/AuthContext'
+import { AuthProvider } from '@application/auth/AuthProvider'
 import { ErrorBoundary } from '@presentation/components/error-boundary/ErrorBoundary'
 import { appConfig } from './config'
 

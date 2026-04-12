@@ -14,7 +14,7 @@ const LoginPage: React.FC = () => {
     (location.state as { from?: { pathname: string } } | null)?.from?.pathname ?? ROUTES.DASHBOARD
 
   const loginMutation = useLoginMutation(() => {
-    void navigate(from, { replace: true })
+    navigate(from, { replace: true })
   })
 
   const handleSubmit = (values: LoginFormValues): void => {
