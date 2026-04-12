@@ -1,0 +1,22 @@
+{
+  "semi": false,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "printWidth": 100,
+  "bracketSpacing": true,
+  "arrowParens": "always",
+  "endOfLine": "lf",
+  "importOrder": [
+    "^react",
+    "^react-dom",
+    "<THIRD_PARTY_MODULES>",
+    "^@app/(.*)$",
+    "^@domain/(.*)$",
+    "^@application/(.*)$",
+    "^@infrastructure/(.*)$",
+    "^@presentation/(.*)$",
+    "^@shared/(.*)$",
+    "^[./]"
+  ]
+}
