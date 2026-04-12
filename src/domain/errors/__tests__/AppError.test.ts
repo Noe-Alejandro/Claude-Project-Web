@@ -3,9 +3,7 @@ import { AppError, ErrorCode, getErrorMessage } from '../AppError'
 
 describe('AppError', () => {
   it('still constructs correctly when captureStackTrace is unavailable', () => {
-    const errorWithCaptureStackTrace = Error as ErrorConstructor & {
-      captureStackTrace?: (targetObject: Error, constructorOpt?: unknown) => void
-    }
+    const errorWithCaptureStackTrace = Error as any
     const originalCaptureStackTrace = errorWithCaptureStackTrace.captureStackTrace
 
     errorWithCaptureStackTrace.captureStackTrace = undefined
