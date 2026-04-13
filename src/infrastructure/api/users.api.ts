@@ -78,7 +78,7 @@ const mockUserList: UserSummaryDto[] = [
 
 let mockUsers = [...mockUserList]
 
-const mockDetails: Record<string, UserDetailDto> = {
+let mockDetails: Record<string, UserDetailDto> = {
   usr_01: {
     id: 'usr_01',
     email: 'admin@example.com',
@@ -161,7 +161,7 @@ export const usersApi = {
   async create(request: CreateUserDto): Promise<UserDetailDto> {
     if (appConfig.useMockApi) {
       await delay(700)
-      const id = `usr_${Date.now()}`
+      const id = `usr_${String(Date.now())}`
       const detail: UserDetailDto = {
         id,
         email: request.email,
@@ -191,7 +191,9 @@ export const usersApi = {
     if (appConfig.useMockApi) {
       await delay(400)
       mockUsers = mockUsers.filter((u) => u.id !== id)
-      delete mockDetails[id]
+      const { [id]: _removedUser, ...remainingDetails } = mockDetails
+      void _removedUser
+      mockDetails = remainingDetails
       return
     }
 

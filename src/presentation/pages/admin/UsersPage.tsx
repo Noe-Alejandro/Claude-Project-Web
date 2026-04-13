@@ -9,7 +9,6 @@ import {
   useDeleteUserMutation,
 } from '@application/users/useUserQueries'
 import type { UserSummaryDto } from '@infrastructure/api/users.api'
-import type { UserRole } from '@domain/models/User'
 import { Card } from '@presentation/components/ui/Card'
 import { Button } from '@presentation/components/ui/Button'
 import { RoleBadge } from '@presentation/components/ui/Badge'
@@ -68,10 +67,15 @@ const UsersPage: React.FC = () => {
         <div>
           <h1 className="text-2xl font-bold text-slate-100 tracking-tight">Users</h1>
           <p className="mt-1 text-sm text-slate-400">
-            {data ? `${data.total} total users` : 'Manage your team members'}
+            {data ? `${String(data.total)} total users` : 'Manage your team members'}
           </p>
         </div>
-        <Button leftIcon={<UserPlus className="h-4 w-4" />} onClick={() => setShowCreate(true)}>
+        <Button
+          leftIcon={<UserPlus className="h-4 w-4" />}
+          onClick={() => {
+            setShowCreate(true)
+          }}
+        >
           Add user
         </Button>
       </div>
@@ -91,7 +95,7 @@ const UsersPage: React.FC = () => {
           </div>
         )}
 
-        {data && !isLoading && (
+        {data && (
           <>
             {/* Desktop table */}
             <div className="overflow-x-auto">
@@ -118,7 +122,9 @@ const UsersPage: React.FC = () => {
                     <UserRow
                       key={user.id}
                       user={user}
-                      onDelete={() => setDeleteTarget(user)}
+                      onDelete={() => {
+                        setDeleteTarget(user)
+                      }}
                       isDeleting={deleteMutation.isPending && deleteTarget?.id === user.id}
                     />
                   ))}
@@ -137,7 +143,9 @@ const UsersPage: React.FC = () => {
                     variant="secondary"
                     size="sm"
                     disabled={!data.hasPreviousPage}
-                    onClick={() => setPage((p) => p - 1)}
+                    onClick={() => {
+                      setPage((p) => p - 1)
+                    }}
                     leftIcon={<ChevronLeft className="h-3.5 w-3.5" />}
                   >
                     Prev
@@ -146,7 +154,9 @@ const UsersPage: React.FC = () => {
                     variant="secondary"
                     size="sm"
                     disabled={!data.hasNextPage}
-                    onClick={() => setPage((p) => p + 1)}
+                    onClick={() => {
+                      setPage((p) => p + 1)
+                    }}
                     rightIcon={<ChevronRight className="h-3.5 w-3.5" />}
                   >
                     Next
@@ -160,7 +170,12 @@ const UsersPage: React.FC = () => {
 
       {/* Create user modal */}
       {showCreate && (
-        <Modal title="Add user" onClose={() => setShowCreate(false)}>
+        <Modal
+          title="Add user"
+          onClose={() => {
+            setShowCreate(false)
+          }}
+        >
           <form onSubmit={handleSubmit(onCreateSubmit)} className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <Field label="First name" error={errors.firstName?.message}>
@@ -200,7 +215,13 @@ const UsersPage: React.FC = () => {
               </p>
             )}
             <div className="flex justify-end gap-3 pt-2">
-              <Button variant="ghost" type="button" onClick={() => setShowCreate(false)}>
+              <Button
+                variant="ghost"
+                type="button"
+                onClick={() => {
+                  setShowCreate(false)
+                }}
+              >
                 Cancel
               </Button>
               <Button type="submit" isLoading={createMutation.isPending}>
@@ -213,7 +234,12 @@ const UsersPage: React.FC = () => {
 
       {/* Delete confirmation modal */}
       {deleteTarget && (
-        <Modal title="Delete user" onClose={() => setDeleteTarget(null)}>
+        <Modal
+          title="Delete user"
+          onClose={() => {
+            setDeleteTarget(null)
+          }}
+        >
           <div className="space-y-4">
             <p className="text-sm text-slate-300">
               Are you sure you want to delete{' '}
@@ -224,7 +250,12 @@ const UsersPage: React.FC = () => {
               <p className="text-xs text-red-400">Failed to delete user. Please try again.</p>
             )}
             <div className="flex justify-end gap-3">
-              <Button variant="ghost" onClick={() => setDeleteTarget(null)}>
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setDeleteTarget(null)
+                }}
+              >
                 Cancel
               </Button>
               <Button
@@ -264,7 +295,9 @@ const UserRow: React.FC<{
     </td>
     <td className="px-5 py-3.5 text-right">
       <button
-        onClick={onDelete}
+        onClick={() => {
+          onDelete()
+        }}
         disabled={isDeleting}
         className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded-lg
           text-slate-500 hover:text-red-400 hover:bg-red-500/10 disabled:cursor-not-allowed"
@@ -282,13 +315,20 @@ const Modal: React.FC<{ title: string; onClose: () => void; children: React.Reac
   children,
 }) => (
   <>
-    <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+    <div
+      className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
+      onClick={() => {
+        onClose()
+      }}
+    />
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md rounded-2xl border border-white/10 bg-slate-900 shadow-2xl animate-fade-in">
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/8">
           <h2 className="text-base font-semibold text-slate-100">{title}</h2>
           <button
-            onClick={onClose}
+            onClick={() => {
+              onClose()
+            }}
             className="p-1 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-white/5 transition-colors"
           >
             <X className="h-4 w-4" />
@@ -305,7 +345,7 @@ const inputClass =
   'placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/50 ' +
   'focus:border-brand-500/50 transition-colors'
 
-const Field: React.FC<{ label: string; error?: string; children: React.ReactNode }> = ({
+const Field: React.FC<{ label: string; error?: string | undefined; children: React.ReactNode }> = ({
   label,
   error,
   children,

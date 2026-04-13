@@ -16,11 +16,15 @@ const SettingsPage: React.FC = () => {
     timezone: 'UTC',
   })
 
-  const toggle = (key: keyof typeof prefs) => setPrefs((p) => ({ ...p, [key]: !p[key] }))
+  const toggle = (key: keyof typeof prefs) => {
+    setPrefs((p) => ({ ...p, [key]: !p[key] }))
+  }
 
   const handleSave = () => {
     setSaved(true)
-    setTimeout(() => setSaved(false), 2000)
+    setTimeout(() => {
+      setSaved(false)
+    }, 2000)
   }
 
   if (!user) return null
@@ -41,13 +45,17 @@ const SettingsPage: React.FC = () => {
             label="Email notifications"
             description="Receive email updates about activity in your workspace"
             checked={prefs.emailNotifications}
-            onChange={() => toggle('emailNotifications')}
+            onChange={() => {
+              toggle('emailNotifications')
+            }}
           />
           <ToggleRow
             label="Security alerts"
             description="Get notified about sign-ins from new devices or locations"
             checked={prefs.securityAlerts}
-            onChange={() => toggle('securityAlerts')}
+            onChange={() => {
+              toggle('securityAlerts')
+            }}
           />
         </div>
       </Card>
@@ -60,7 +68,9 @@ const SettingsPage: React.FC = () => {
             label="Dark mode"
             description="Use the dark color scheme across the application"
             checked={prefs.darkMode}
-            onChange={() => toggle('darkMode')}
+            onChange={() => {
+              toggle('darkMode')
+            }}
           />
         </div>
       </Card>
@@ -76,7 +86,9 @@ const SettingsPage: React.FC = () => {
               { value: 'en', label: 'English' },
               { value: 'es', label: 'Español' },
             ]}
-            onChange={(v) => setPrefs((p) => ({ ...p, language: v }))}
+            onChange={(v) => {
+              setPrefs((p) => ({ ...p, language: v }))
+            }}
           />
           <SelectRow
             label="Timezone"
@@ -89,7 +101,9 @@ const SettingsPage: React.FC = () => {
               { value: 'Europe/London', label: 'London (GMT)' },
               { value: 'Europe/Berlin', label: 'Berlin (CET)' },
             ]}
-            onChange={(v) => setPrefs((p) => ({ ...p, timezone: v }))}
+            onChange={(v) => {
+              setPrefs((p) => ({ ...p, timezone: v }))
+            }}
           />
         </div>
       </Card>
@@ -164,7 +178,9 @@ const SelectRow: React.FC<{
     <label className="text-sm text-slate-300 shrink-0">{label}</label>
     <select
       value={value}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={(e) => {
+        onChange(e.target.value)
+      }}
       className="bg-white/5 border border-white/10 text-slate-200 text-sm rounded-lg px-3 py-1.5
         focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50
         cursor-pointer min-w-[160px]"
