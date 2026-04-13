@@ -69,9 +69,9 @@ describe('authService', () => {
 
     expect(authApiMocks.login.mock.calls).toEqual([[credentials]])
     expect(tokenStorageMocks.setAccessToken.mock.calls).toEqual([
-      ['token-123', Date.now() + 900_000],
+      ['token-123', Date.now() + 900_000, true],
     ])
-    expect(tokenStorageMocks.setSessionFlag.mock.calls).toEqual([[true]])
+    expect(tokenStorageMocks.setSessionFlag.mock.calls).toEqual([[true, true]])
     expect(result).toEqual({
       user: mockUser,
       expiresAt: Date.now() + 900_000,
