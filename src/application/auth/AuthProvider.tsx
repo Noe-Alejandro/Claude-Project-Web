@@ -20,6 +20,7 @@ type AuthAction =
   | { type: 'LOGIN_SUCCESS'; payload: User }
   | { type: 'LOGOUT' }
   | { type: 'SET_ERROR'; payload: AppError }
+  | { type: 'UPDATE_USER'; payload: Partial<User> }
 
 const initialState: AuthState = {
   status: 'initializing',
@@ -41,6 +42,8 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
       return { status: 'unauthenticated', user: null, error: null }
     case 'SET_ERROR':
       return { ...state, error: action.payload }
+    case 'UPDATE_USER':
+      return state.user ? { ...state, user: { ...state.user, ...action.payload } } : state
     default:
       return state
   }
@@ -94,6 +97,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     dispatch({ type: 'SET_ERROR', payload: new AppError('') })
   }, [])
 
+  const updateUser = useCallback((patch: Partial<User>): void => {
+    dispatch({ type: 'UPDATE_USER', payload: patch })
+  }, [])
+
   return (
     <AuthContext.Provider
       value={{
@@ -105,6 +112,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         login,
         logout,
         clearError,
+        updateUser,
       }}
     >
       {children}

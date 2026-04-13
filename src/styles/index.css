@@ -15,6 +15,28 @@
     text-rendering: optimizeLegibility;
   }
 
+  input,
+  textarea,
+  select {
+    color-scheme: dark;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    -webkit-text-fill-color: #94a3b8;
+    caret-color: #94a3b8;
+    box-shadow: 0 0 0 1000px rgba(30, 41, 59, 0.96) inset;
+    transition: background-color 9999s ease-out;
+    border-color: rgba(255, 255, 255, 0.05);
+  }
+
   /* Custom scrollbar */
   ::-webkit-scrollbar {
     width: 6px;
@@ -37,7 +59,7 @@
 @layer utilities {
   /* Glass morphism utility */
   .glass {
-    @apply bg-white/5 backdrop-blur-sm border border-white/10;
+    @apply bg-slate-800/70 backdrop-blur-sm border border-white/[0.06];
   }
 
   /* Focus ring consistent with design system */

@@ -20,8 +20,8 @@ export const authService = {
     const response = await authApi.login(credentials)
 
     const expiresAt = Date.now() + response.expiresIn * 1000
-    tokenStorage.setAccessToken(response.accessToken, expiresAt)
-    tokenStorage.setSessionFlag(true)
+    tokenStorage.setAccessToken(response.accessToken, expiresAt, credentials.rememberMe)
+    tokenStorage.setSessionFlag(true, credentials.rememberMe)
 
     return { user: response.user, expiresAt }
   },

@@ -93,7 +93,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isLoading, error
         <label className="flex items-center gap-2.5 cursor-pointer group">
           <input
             type="checkbox"
-            className="h-4 w-4 rounded border-white/20 bg-white/5 text-brand-500
+            className="h-4 w-4 rounded border-white/20 bg-slate-700/80 text-brand-500
                        focus:ring-2 focus:ring-brand-500/30 focus:ring-offset-0
                        checked:bg-brand-500 checked:border-brand-500 cursor-pointer"
             {...register('rememberMe')}
@@ -115,14 +115,14 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, isLoading, error
       </Button>
 
       {/* Demo credentials hint */}
-      <div className="rounded-lg border border-white/8 bg-white/3 p-3">
+      <div className="rounded-xl border border-white/[0.06] bg-slate-800/55 p-3">
         <p className="text-xs text-slate-400 font-medium mb-1.5">Demo credentials</p>
         <div className="space-y-1">
           <p className="text-xs text-slate-500 font-mono">
-            <span className="text-slate-400">admin@example.com</span> / password123
+            <span className="text-slate-400">admin@example.com</span> / Admin@123!
           </p>
           <p className="text-xs text-slate-500 font-mono">
-            <span className="text-slate-400">user@example.com</span> / password123
+            <span className="text-slate-400">user@example.com</span> / User@123!
           </p>
         </div>
       </div>

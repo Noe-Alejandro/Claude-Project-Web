@@ -34,3 +34,14 @@ export const useDeleteUserMutation = () => {
     },
   })
 }
+
+export const useUpdateAvatarMutation = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id, avatarUrl }: { id: string; avatarUrl: string | null }) =>
+      usersApi.updateAvatar(id, avatarUrl),
+    onSuccess: (_, { id }) => {
+      void queryClient.invalidateQueries({ queryKey: queryKeys.users.detail(id) })
+    },
+  })
+}

@@ -3,6 +3,7 @@ import { Bell, Moon, Globe, Shield, Save } from 'lucide-react'
 import { useAuth } from '@shared/hooks/useAuth'
 import { Card } from '@presentation/components/ui/Card'
 import { Button } from '@presentation/components/ui/Button'
+import { SoftSectionHeader } from '@presentation/components/ui/Surface'
 
 const SettingsPage: React.FC = () => {
   const { user } = useAuth()
@@ -39,7 +40,7 @@ const SettingsPage: React.FC = () => {
 
       {/* Notifications */}
       <Card padding="none">
-        <SectionHeader icon={<Bell className="h-4 w-4" />} title="Notifications" />
+        <SoftSectionHeader icon={<Bell className="h-4 w-4" />} title="Notifications" />
         <div className="divide-y divide-white/5 px-5">
           <ToggleRow
             label="Email notifications"
@@ -62,7 +63,7 @@ const SettingsPage: React.FC = () => {
 
       {/* Appearance */}
       <Card padding="none">
-        <SectionHeader icon={<Moon className="h-4 w-4" />} title="Appearance" />
+        <SoftSectionHeader icon={<Moon className="h-4 w-4" />} title="Appearance" />
         <div className="divide-y divide-white/5 px-5">
           <ToggleRow
             label="Dark mode"
@@ -77,7 +78,7 @@ const SettingsPage: React.FC = () => {
 
       {/* Language & region */}
       <Card padding="none">
-        <SectionHeader icon={<Globe className="h-4 w-4" />} title="Language & Region" />
+        <SoftSectionHeader icon={<Globe className="h-4 w-4" />} title="Language & Region" />
         <div className="px-5 py-4 space-y-4">
           <SelectRow
             label="Language"
@@ -110,7 +111,7 @@ const SettingsPage: React.FC = () => {
 
       {/* Security */}
       <Card padding="none">
-        <SectionHeader icon={<Shield className="h-4 w-4" />} title="Security" />
+        <SoftSectionHeader icon={<Shield className="h-4 w-4" />} title="Security" />
         <div className="px-5 py-4">
           <p className="text-sm text-slate-400 mb-4">
             To change your password or enable two-factor authentication, contact your administrator.
@@ -133,13 +134,6 @@ const SettingsPage: React.FC = () => {
 }
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
-
-const SectionHeader: React.FC<{ icon: React.ReactNode; title: string }> = ({ icon, title }) => (
-  <div className="flex items-center gap-2.5 px-5 py-4 border-b border-white/8">
-    <span className="text-slate-400">{icon}</span>
-    <h3 className="text-sm font-semibold text-slate-200">{title}</h3>
-  </div>
-)
 
 const ToggleRow: React.FC<{
   label: string
@@ -181,8 +175,8 @@ const SelectRow: React.FC<{
       onChange={(e) => {
         onChange(e.target.value)
       }}
-      className="bg-white/5 border border-white/10 text-slate-200 text-sm rounded-lg px-3 py-1.5
-        focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50
+      className="rounded-xl border border-white/[0.05] bg-slate-800/88 px-3 py-2 text-sm text-slate-300
+        focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500/30
         cursor-pointer min-w-[160px]"
     >
       {options.map((o) => (

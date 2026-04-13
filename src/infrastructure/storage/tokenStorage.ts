@@ -1,46 +1,73 @@
 /**
  * Token Storage Strategy
  *
- * Access token → stored in memory (primary) + sessionStorage (page-reload resilience).
- *   Memory storage prevents XSS from reading the token during a session.
- *   sessionStorage copy is used only on cold start (page reload) since this
- *   backend is stateless JWT with no refresh-token endpoint.
+ * Access token → stored in memory (primary) + sessionStorage or localStorage.
+ *   - rememberMe=false  → sessionStorage (cleared when tab closes)
+ *   - rememberMe=true   → localStorage   (persists across browser restarts)
  *
- * Trade-off: sessionStorage is JS-readable (XSS risk), but without a refresh
- *   endpoint the token must survive page reloads somehow. sessionStorage is
- *   scoped to the tab and cleared when the tab closes, limiting exposure.
+ * Memory is always the primary read path; storage is the cold-start fallback.
  */
 
 const SESSION_TOKEN_KEY = '__s_tok__'
 const SESSION_EXPIRES_KEY = '__s_exp__'
+const SESSION_FLAG_KEY = 'has_session'
+const PERSISTENT_FLAG = '__s_persist__'
 
 let accessTokenMemory: string | null = null
 let tokenExpiresAt: number | null = null
 
 export const tokenStorage = {
-  setAccessToken(token: string, expiresAt: number): void {
+  setAccessToken(token: string, expiresAt: number, rememberMe = false): void {
     accessTokenMemory = token
     tokenExpiresAt = expiresAt
-    // Persist for page-reload resilience (no refresh endpoint on this backend)
-    sessionStorage.setItem(SESSION_TOKEN_KEY, token)
-    sessionStorage.setItem(SESSION_EXPIRES_KEY, String(expiresAt))
+
+    const store = rememberMe ? localStorage : sessionStorage
+
+    // Clear the other storage so there's never a stale token in both
+    try {
+      localStorage.removeItem(SESSION_TOKEN_KEY)
+      localStorage.removeItem(SESSION_EXPIRES_KEY)
+      localStorage.removeItem(PERSISTENT_FLAG)
+    } catch {
+      /* ignore */
+    }
+    sessionStorage.removeItem(SESSION_TOKEN_KEY)
+    sessionStorage.removeItem(SESSION_EXPIRES_KEY)
+
+    store.setItem(SESSION_TOKEN_KEY, token)
+    store.setItem(SESSION_EXPIRES_KEY, String(expiresAt))
+
+    if (rememberMe) {
+      try {
+        localStorage.setItem(PERSISTENT_FLAG, '1')
+      } catch {
+        /* ignore */
+      }
+    }
   },
 
   getAccessToken(): string | null {
     if (accessTokenMemory) return accessTokenMemory
-    // Cold start: restore from sessionStorage if token is still valid
-    const stored = sessionStorage.getItem(SESSION_TOKEN_KEY)
-    const expires = sessionStorage.getItem(SESSION_EXPIRES_KEY)
-    if (stored && expires) {
-      const exp = parseInt(expires, 10)
-      if (exp > Date.now()) {
-        accessTokenMemory = stored
-        tokenExpiresAt = exp
-        return stored
+
+    // Cold start: try sessionStorage first, then localStorage
+    for (const store of [sessionStorage, localStorage]) {
+      try {
+        const stored = store.getItem(SESSION_TOKEN_KEY)
+        const expires = store.getItem(SESSION_EXPIRES_KEY)
+        if (stored && expires) {
+          const exp = parseInt(expires, 10)
+          if (exp > Date.now()) {
+            accessTokenMemory = stored
+            tokenExpiresAt = exp
+            return stored
+          }
+          // Expired — clean up this store
+          store.removeItem(SESSION_TOKEN_KEY)
+          store.removeItem(SESSION_EXPIRES_KEY)
+        }
+      } catch {
+        /* ignore */
       }
-      // Expired — clean up
-      sessionStorage.removeItem(SESSION_TOKEN_KEY)
-      sessionStorage.removeItem(SESSION_EXPIRES_KEY)
     }
     return null
   },
@@ -58,17 +85,35 @@ export const tokenStorage = {
     tokenExpiresAt = null
     sessionStorage.removeItem(SESSION_TOKEN_KEY)
     sessionStorage.removeItem(SESSION_EXPIRES_KEY)
+    try {
+      localStorage.removeItem(SESSION_TOKEN_KEY)
+      localStorage.removeItem(SESSION_EXPIRES_KEY)
+      localStorage.removeItem(PERSISTENT_FLAG)
+    } catch {
+      /* ignore */
+    }
   },
 
-  setSessionFlag(value: boolean): void {
+  setSessionFlag(value: boolean, rememberMe = false): void {
     if (value) {
-      sessionStorage.setItem('has_session', '1')
+      const store = rememberMe ? localStorage : sessionStorage
+      store.setItem(SESSION_FLAG_KEY, '1')
     } else {
-      sessionStorage.removeItem('has_session')
+      sessionStorage.removeItem(SESSION_FLAG_KEY)
+      try {
+        localStorage.removeItem(SESSION_FLAG_KEY)
+      } catch {
+        /* ignore */
+      }
     }
   },
 
   hasSessionFlag(): boolean {
-    return sessionStorage.getItem('has_session') === '1'
+    if (sessionStorage.getItem(SESSION_FLAG_KEY) === '1') return true
+    try {
+      return localStorage.getItem(SESSION_FLAG_KEY) === '1'
+    } catch {
+      return false
+    }
   },
 }

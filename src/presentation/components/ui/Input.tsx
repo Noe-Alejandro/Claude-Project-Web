@@ -41,11 +41,11 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             aria-describedby={hasError ? errorId : helperText ? hintId : undefined}
             className={cn(
               // Base
-              'w-full rounded-lg border bg-white/5 text-slate-100 placeholder:text-slate-500',
+              'w-full rounded-xl border bg-slate-800/88 text-slate-400 placeholder:text-slate-500',
               'text-sm transition-all duration-150',
               'focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-offset-slate-950',
               // Default state
-              'border-white/10 focus:border-brand-500 focus:ring-brand-500/30',
+              'border-white/[0.05] focus:border-brand-500/30 focus:ring-brand-500/20',
               // Error state
               hasError && 'border-red-500/70 focus:border-red-500 focus:ring-red-500/30',
               // Disabled

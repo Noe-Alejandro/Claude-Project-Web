@@ -14,6 +14,7 @@ export interface AuthContextValue {
   login: (credentials: LoginCredentials) => Promise<void>
   logout: () => Promise<void>
   clearError: () => void
+  updateUser: (patch: Partial<User>) => void
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null)

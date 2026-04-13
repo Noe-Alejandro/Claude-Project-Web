@@ -199,4 +199,22 @@ export const usersApi = {
 
     await httpClient.delete(`/users/${id}`)
   },
+
+  async updateAvatar(id: string, avatarUrl: string | null): Promise<UserDetailDto> {
+    if (appConfig.useMockApi) {
+      await delay(400)
+      const detail = mockDetails[id]
+      if (!detail) throw new Error('User not found')
+      mockDetails[id] = { ...detail, avatarUrl }
+      const summary = mockUsers.find((u) => u.id === id)
+      if (summary) {
+        const idx = mockUsers.indexOf(summary)
+        mockUsers[idx] = { ...summary }
+      }
+      return mockDetails[id]
+    }
+
+    const { data } = await httpClient.patch<UserDetailDto>(`/users/${id}/avatar`, { avatarUrl })
+    return data
+  },
 }

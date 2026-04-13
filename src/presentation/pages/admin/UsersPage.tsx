@@ -1,8 +1,19 @@
 import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useController, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { UserPlus, Trash2, ChevronLeft, ChevronRight, X, AlertTriangle } from 'lucide-react'
+import {
+  UserPlus,
+  Trash2,
+  ChevronLeft,
+  ChevronRight,
+  X,
+  AlertTriangle,
+  Shield,
+  Eye,
+  Briefcase,
+  Sparkles,
+} from 'lucide-react'
 import {
   useUsers,
   useCreateUserMutation,
@@ -13,6 +24,7 @@ import { Card } from '@presentation/components/ui/Card'
 import { Button } from '@presentation/components/ui/Button'
 import { RoleBadge } from '@presentation/components/ui/Badge'
 import { Spinner } from '@presentation/components/ui/Spinner'
+import { SoftDivider, SoftSectionHeader } from '@presentation/components/ui/Surface'
 import { cn } from '@shared/utils/cn'
 
 // ─── Create user form schema ──────────────────────────────────────────────────
@@ -27,6 +39,38 @@ const createSchema = z.object({
 
 type CreateFormValues = z.infer<typeof createSchema>
 
+const roleOptions: {
+  value: CreateFormValues['role']
+  label: string
+  description: string
+  icon: React.ReactNode
+}[] = [
+  {
+    value: 'viewer',
+    label: 'Viewer',
+    description: 'Can review activity and read shared information.',
+    icon: <Eye className="h-4 w-4" />,
+  },
+  {
+    value: 'user',
+    label: 'User',
+    description: 'Default workspace access for day-to-day work.',
+    icon: <Sparkles className="h-4 w-4" />,
+  },
+  {
+    value: 'manager',
+    label: 'Manager',
+    description: 'Can coordinate teams and oversee workspace actions.',
+    icon: <Briefcase className="h-4 w-4" />,
+  },
+  {
+    value: 'admin',
+    label: 'Admin',
+    description: 'Full control over users, settings, and permissions.',
+    icon: <Shield className="h-4 w-4" />,
+  },
+]
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 const UsersPage: React.FC = () => {
@@ -39,6 +83,7 @@ const UsersPage: React.FC = () => {
   const deleteMutation = useDeleteUserMutation()
 
   const {
+    control,
     register,
     handleSubmit,
     reset,
@@ -47,6 +92,11 @@ const UsersPage: React.FC = () => {
     resolver: zodResolver(createSchema),
     defaultValues: { role: 'user' },
   })
+  const { field: roleField } = useController({
+    control,
+    name: 'role',
+  })
+  const selectedRole = roleField.value
 
   const onCreateSubmit = async (values: CreateFormValues) => {
     await createMutation.mutateAsync(values)
@@ -98,10 +148,11 @@ const UsersPage: React.FC = () => {
         {data && (
           <>
             {/* Desktop table */}
-            <div className="overflow-x-auto">
+            <div className="relative overflow-x-auto">
+              <SoftDivider inset />
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-white/8">
+                  <tr>
                     <th className="text-left px-5 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
                       Name
                     </th>
@@ -134,7 +185,8 @@ const UsersPage: React.FC = () => {
 
             {/* Pagination */}
             {data.totalPages > 1 && (
-              <div className="flex items-center justify-between px-5 py-3 border-t border-white/8">
+              <div className="relative flex items-center justify-between px-5 py-3">
+                <SoftDivider inset className="top-0 bottom-auto" />
                 <p className="text-xs text-slate-500">
                   Page {data.page} of {data.totalPages}
                 </p>
@@ -176,7 +228,19 @@ const UsersPage: React.FC = () => {
             setShowCreate(false)
           }}
         >
-          <form onSubmit={handleSubmit(onCreateSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(onCreateSubmit)} className="space-y-5">
+            <div className="rounded-[24px] border border-white/[0.05] bg-[radial-gradient(circle_at_top_left,_rgba(99,102,241,0.16),_transparent_35%),linear-gradient(180deg,_rgba(255,255,255,0.02),_rgba(255,255,255,0.01))] p-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-brand-200/70">
+                Team onboarding
+              </p>
+              <h3 className="mt-2 text-lg font-semibold text-slate-100">
+                Create a polished new account
+              </h3>
+              <p className="mt-1 text-sm leading-6 text-slate-400">
+                Add the person&apos;s details, choose the right permission level, and keep your team
+                directory clean from the start.
+              </p>
+            </div>
             <div className="grid grid-cols-2 gap-3">
               <Field label="First name" error={errors.firstName?.message}>
                 <input {...register('firstName')} placeholder="Alex" className={inputClass} />
@@ -202,12 +266,53 @@ const UsersPage: React.FC = () => {
               />
             </Field>
             <Field label="Role" error={errors.role?.message}>
-              <select {...register('role')} className={cn(inputClass, 'cursor-pointer')}>
-                <option value="viewer">Viewer</option>
-                <option value="user">User</option>
-                <option value="manager">Manager</option>
-                <option value="admin">Admin</option>
-              </select>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {roleOptions.map((role) => {
+                  const isActive = selectedRole === role.value
+                  return (
+                    <button
+                      key={role.value}
+                      type="button"
+                      onClick={() => {
+                        roleField.onChange(role.value)
+                      }}
+                      className={cn(
+                        'rounded-2xl border px-4 py-3 text-left transition-[border-color,background-color,color] duration-100',
+                        'bg-slate-800/50',
+                        isActive
+                          ? 'border-brand-400/30 bg-brand-500/10'
+                          : 'border-white/[0.05] hover:border-white/[0.08] hover:bg-slate-800/70',
+                      )}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div
+                          className={cn(
+                            'mt-0.5 rounded-xl p-2',
+                            isActive
+                              ? 'bg-brand-500/20 text-brand-200'
+                              : 'bg-slate-800/70 text-slate-400',
+                          )}
+                        >
+                          {role.icon}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2">
+                            <p className="text-sm font-semibold text-slate-100">{role.label}</p>
+                            {isActive && (
+                              <span className="rounded-full border border-brand-400/20 bg-brand-500/15 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.2em] text-brand-200">
+                                Selected
+                              </span>
+                            )}
+                          </div>
+                          <p className="mt-1 text-xs leading-5 text-slate-400">
+                            {role.description}
+                          </p>
+                        </div>
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
             </Field>
             {createMutation.isError && (
               <p className="text-xs text-red-400">
@@ -316,24 +421,26 @@ const Modal: React.FC<{ title: string; onClose: () => void; children: React.Reac
 }) => (
   <>
     <div
-      className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
+      className="fixed inset-0 z-40 bg-slate-950/72"
       onClick={() => {
         onClose()
       }}
     />
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md rounded-2xl border border-white/10 bg-slate-900 shadow-2xl animate-fade-in">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-white/8">
-          <h2 className="text-base font-semibold text-slate-100">{title}</h2>
-          <button
-            onClick={() => {
-              onClose()
-            }}
-            className="p-1 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-white/5 transition-colors"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </div>
+      <div className="w-full max-w-2xl rounded-[28px] border border-white/[0.05] bg-[linear-gradient(180deg,_rgba(15,23,42,0.94),_rgba(15,23,42,0.9))] shadow-[0_24px_80px_-42px_rgba(2,6,23,0.95)] animate-fade-in">
+        <SoftSectionHeader
+          title={title}
+          actions={
+            <button
+              onClick={() => {
+                onClose()
+              }}
+              className="rounded-lg p-1 text-slate-400 transition-colors hover:bg-white/5 hover:text-slate-200"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          }
+        />
         <div className="p-5">{children}</div>
       </div>
     </div>
@@ -341,9 +448,8 @@ const Modal: React.FC<{ title: string; onClose: () => void; children: React.Reac
 )
 
 const inputClass =
-  'w-full bg-white/5 border border-white/10 text-slate-200 text-sm rounded-lg px-3 py-2 ' +
-  'placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-brand-500/50 ' +
-  'focus:border-brand-500/50 transition-colors'
+  'w-full rounded-xl border border-white/[0.05] bg-slate-800/88 px-3 py-2.5 text-sm text-slate-400 ' +
+  'placeholder-slate-500 transition-colors focus:border-brand-500/30 focus:outline-none focus:ring-2 focus:ring-brand-500/20'
 
 const Field: React.FC<{ label: string; error?: string | undefined; children: React.ReactNode }> = ({
   label,

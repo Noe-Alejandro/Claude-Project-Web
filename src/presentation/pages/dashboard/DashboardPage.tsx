@@ -15,6 +15,7 @@ import { formatRelativeTime } from '@shared/utils/format'
 import { Card } from '@presentation/components/ui/Card'
 import { Badge, RoleBadge } from '@presentation/components/ui/Badge'
 import { Avatar } from '@presentation/components/ui/Avatar'
+import { SoftDivider, SoftSectionHeader } from '@presentation/components/ui/Surface'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -149,13 +150,12 @@ const DashboardPage: React.FC = () => {
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* Activity feed */}
         <Card className="xl:col-span-2" padding="none">
-          <div className="px-6 py-4 border-b border-white/8 flex items-center justify-between">
-            <div>
-              <h2 className="text-base font-semibold text-slate-100">Recent Activity</h2>
-              <p className="text-xs text-slate-500 mt-0.5">Latest actions across your workspace</p>
-            </div>
-            <Badge variant="brand">Live</Badge>
-          </div>
+          <SoftSectionHeader
+            className="px-6"
+            title="Recent Activity"
+            description="Latest actions across your workspace"
+            actions={<Badge variant="brand">Live</Badge>}
+          />
           <div className="divide-y divide-white/5">
             {recentActivity.map((item) => (
               <ActivityRow key={item.id} activity={item} />
@@ -165,9 +165,7 @@ const DashboardPage: React.FC = () => {
 
         {/* Quick info panel */}
         <Card padding="none">
-          <div className="px-5 py-4 border-b border-white/8">
-            <h2 className="text-base font-semibold text-slate-100">Account Details</h2>
-          </div>
+          <SoftSectionHeader title="Account Details" />
           <div className="p-5 space-y-4">
             <InfoRow label="Email" value={user.email} />
             <InfoRow label="Role" value={<RoleBadge role={user.role} />} />
@@ -183,7 +181,8 @@ const DashboardPage: React.FC = () => {
               value={user.lastLoginAt ? formatRelativeTime(user.lastLoginAt) : 'First login'}
             />
 
-            <div className="pt-4 border-t border-white/8">
+            <div className="relative pt-4">
+              <SoftDivider className="top-0 bottom-auto" />
               <div className="flex items-center gap-2 text-emerald-400">
                 <ShieldCheck className="h-4 w-4" />
                 <span className="text-xs font-medium">Account secured</span>
@@ -198,15 +197,12 @@ const DashboardPage: React.FC = () => {
 
       {/* Performance chart placeholder */}
       <Card padding="none">
-        <div className="px-6 py-4 border-b border-white/8 flex items-center justify-between">
-          <div>
-            <h2 className="text-base font-semibold text-slate-100">System Performance</h2>
-            <p className="text-xs text-slate-500 mt-0.5">Last 30 days — API response times (ms)</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <Badge variant="success">Healthy</Badge>
-          </div>
-        </div>
+        <SoftSectionHeader
+          className="px-6"
+          title="System Performance"
+          description="Last 30 days - API response times (ms)"
+          actions={<Badge variant="success">Healthy</Badge>}
+        />
         <div className="p-6">
           <MiniChart />
         </div>
@@ -218,7 +214,7 @@ const DashboardPage: React.FC = () => {
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
 const StatCard: React.FC<{ stat: Stat }> = ({ stat }) => (
-  <Card className="group hover:border-white/15 transition-colors duration-200">
+  <Card className="group transition-all duration-200 hover:border-white/[0.08] hover:bg-[linear-gradient(180deg,_rgba(30,41,59,0.72),_rgba(15,23,42,0.66))]">
     <div className="flex items-start justify-between mb-4">
       <span className={`p-2 rounded-lg bg-white/5 ${stat.color}`}>{stat.icon}</span>
       <span
@@ -240,7 +236,7 @@ const StatCard: React.FC<{ stat: Stat }> = ({ stat }) => (
 )
 
 const ActivityRow: React.FC<{ activity: Activity }> = ({ activity }) => (
-  <div className="flex items-start gap-4 px-6 py-4 hover:bg-white/3 transition-colors">
+  <div className="flex items-start gap-4 px-6 py-4 transition-colors hover:bg-white/[0.025]">
     <div className="h-8 w-8 rounded-full bg-gradient-to-br from-brand-500/20 to-brand-700/20 border border-brand-500/20 flex items-center justify-center shrink-0 mt-0.5">
       <TrendingUp className="h-3.5 w-3.5 text-brand-400" />
     </div>

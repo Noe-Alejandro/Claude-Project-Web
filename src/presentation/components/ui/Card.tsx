@@ -22,9 +22,9 @@ export const Card: React.FC<CardProps> = ({
 }) => (
   <div
     className={cn(
-      'rounded-2xl bg-slate-900/80 backdrop-blur-sm',
-      bordered && 'border border-white/8',
-      'shadow-glass',
+      'relative overflow-hidden rounded-2xl bg-[linear-gradient(180deg,_rgba(15,23,42,0.78),_rgba(15,23,42,0.6))] backdrop-blur-xl',
+      bordered && 'border border-white/[0.045] shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]',
+      'shadow-[0_24px_80px_-38px_rgba(15,23,42,0.95)] before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.035),_transparent_42%)]',
       paddingStyles[padding],
       className,
     )}
@@ -73,7 +73,10 @@ export const CardFooter: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   ...props
 }) => (
   <div
-    className={cn('mt-6 pt-6 border-t border-white/8 flex items-center justify-between', className)}
+    className={cn(
+      'mt-6 flex items-center justify-between pt-6 relative before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent',
+      className,
+    )}
     {...props}
   >
     {children}
