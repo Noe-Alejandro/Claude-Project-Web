@@ -3,7 +3,11 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { UserPlus, Trash2, ChevronLeft, ChevronRight, X, AlertTriangle } from 'lucide-react'
-import { useUsers, useCreateUserMutation, useDeleteUserMutation } from '@application/users/useUserQueries'
+import {
+  useUsers,
+  useCreateUserMutation,
+  useDeleteUserMutation,
+} from '@application/users/useUserQueries'
 import type { UserSummaryDto } from '@infrastructure/api/users.api'
 import type { UserRole } from '@domain/models/User'
 import { Card } from '@presentation/components/ui/Card'
@@ -67,10 +71,7 @@ const UsersPage: React.FC = () => {
             {data ? `${data.total} total users` : 'Manage your team members'}
           </p>
         </div>
-        <Button
-          leftIcon={<UserPlus className="h-4 w-4" />}
-          onClick={() => setShowCreate(true)}
-        >
+        <Button leftIcon={<UserPlus className="h-4 w-4" />} onClick={() => setShowCreate(true)}>
           Add user
         </Button>
       </div>
@@ -170,10 +171,20 @@ const UsersPage: React.FC = () => {
               </Field>
             </div>
             <Field label="Email" error={errors.email?.message}>
-              <input {...register('email')} type="email" placeholder="alex@company.com" className={inputClass} />
+              <input
+                {...register('email')}
+                type="email"
+                placeholder="alex@company.com"
+                className={inputClass}
+              />
             </Field>
             <Field label="Password" error={errors.password?.message}>
-              <input {...register('password')} type="password" placeholder="••••••••" className={inputClass} />
+              <input
+                {...register('password')}
+                type="password"
+                placeholder="••••••••"
+                className={inputClass}
+              />
             </Field>
             <Field label="Role" error={errors.role?.message}>
               <select {...register('role')} className={cn(inputClass, 'cursor-pointer')}>
@@ -184,7 +195,9 @@ const UsersPage: React.FC = () => {
               </select>
             </Field>
             {createMutation.isError && (
-              <p className="text-xs text-red-400">Failed to create user. The email may already be in use.</p>
+              <p className="text-xs text-red-400">
+                Failed to create user. The email may already be in use.
+              </p>
             )}
             <div className="flex justify-end gap-3 pt-2">
               <Button variant="ghost" type="button" onClick={() => setShowCreate(false)}>
@@ -243,7 +256,11 @@ const UserRow: React.FC<{
       <RoleBadge role={user.role} />
     </td>
     <td className="px-5 py-3.5 text-slate-500">
-      {new Date(user.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+      {new Date(user.createdAt).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      })}
     </td>
     <td className="px-5 py-3.5 text-right">
       <button

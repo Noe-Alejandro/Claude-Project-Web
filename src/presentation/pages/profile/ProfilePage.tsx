@@ -71,7 +71,8 @@ const ProfilePage: React.FC = () => {
         <div>
           <p className="text-sm font-medium text-emerald-400">Account secured</p>
           <p className="text-xs text-slate-400 mt-0.5">
-            Your account is protected with password authentication. Contact your administrator to update your credentials.
+            Your account is protected with password authentication. Contact your administrator to
+            update your credentials.
           </p>
         </div>
       </div>

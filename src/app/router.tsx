@@ -29,7 +29,11 @@ export const router = createBrowserRouter([
         children: [
           {
             path: ROUTES.LOGIN,
-            element: <Suspense fallback={PageFallback}><LoginPage /></Suspense>,
+            element: (
+              <Suspense fallback={PageFallback}>
+                <LoginPage />
+              </Suspense>
+            ),
           },
         ],
       },
@@ -43,15 +47,27 @@ export const router = createBrowserRouter([
         children: [
           {
             path: ROUTES.DASHBOARD,
-            element: <Suspense fallback={PageFallback}><DashboardPage /></Suspense>,
+            element: (
+              <Suspense fallback={PageFallback}>
+                <DashboardPage />
+              </Suspense>
+            ),
           },
           {
             path: ROUTES.PROFILE,
-            element: <Suspense fallback={PageFallback}><ProfilePage /></Suspense>,
+            element: (
+              <Suspense fallback={PageFallback}>
+                <ProfilePage />
+              </Suspense>
+            ),
           },
           {
             path: ROUTES.SETTINGS,
-            element: <Suspense fallback={PageFallback}><SettingsPage /></Suspense>,
+            element: (
+              <Suspense fallback={PageFallback}>
+                <SettingsPage />
+              </Suspense>
+            ),
           },
           // Admin-only routes
           {
@@ -59,7 +75,11 @@ export const router = createBrowserRouter([
             children: [
               {
                 path: ROUTES.USERS,
-                element: <Suspense fallback={PageFallback}><UsersPage /></Suspense>,
+                element: (
+                  <Suspense fallback={PageFallback}>
+                    <UsersPage />
+                  </Suspense>
+                ),
               },
             ],
           },
@@ -69,6 +89,10 @@ export const router = createBrowserRouter([
   },
   {
     path: '*',
-    element: <Suspense fallback={PageFallback}><NotFoundPage /></Suspense>,
+    element: (
+      <Suspense fallback={PageFallback}>
+        <NotFoundPage />
+      </Suspense>
+    ),
   },
 ])

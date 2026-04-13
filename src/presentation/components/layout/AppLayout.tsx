@@ -231,7 +231,9 @@ export const AppLayout: React.FC = () => {
                       <NavLink
                         to={ROUTES.USERS}
                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-300 hover:bg-white/5 hover:text-slate-100 transition-colors"
-                        onClick={() => { setProfileMenuOpen(false) }}
+                        onClick={() => {
+                          setProfileMenuOpen(false)
+                        }}
                       >
                         <Shield className="h-4 w-4 text-slate-500" />
                         Admin Panel

@@ -125,10 +125,11 @@ export const authApi = {
       }
     }
 
-    const { data } = await httpClient.post<{ accessToken: string; expiresIn: number; user: BackendUserResponse }>(
-      '/auth/login',
-      { email: credentials.email, password: credentials.password },
-    )
+    const { data } = await httpClient.post<{
+      accessToken: string
+      expiresIn: number
+      user: BackendUserResponse
+    }>('/auth/login', { email: credentials.email, password: credentials.password })
     return {
       accessToken: data.accessToken,
       expiresIn: data.expiresIn,

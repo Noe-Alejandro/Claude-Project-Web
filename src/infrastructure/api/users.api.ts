@@ -46,19 +46,79 @@ export interface CreateUserDto {
 const delay = (ms: number): Promise<void> => new Promise((res) => setTimeout(res, ms))
 
 const mockUserList: UserSummaryDto[] = [
-  { id: 'usr_01', email: 'admin@example.com', fullName: 'Alex Morgan', role: 'admin', createdAt: '2024-01-01T00:00:00Z' },
-  { id: 'usr_02', email: 'user@example.com', fullName: 'Jordan Lee', role: 'user', createdAt: '2024-03-15T00:00:00Z' },
-  { id: 'usr_03', email: 'manager@example.com', fullName: 'Sam Rivera', role: 'manager', createdAt: '2024-02-10T00:00:00Z' },
-  { id: 'usr_04', email: 'viewer@example.com', fullName: 'Taylor Kim', role: 'viewer', createdAt: '2024-04-01T00:00:00Z' },
+  {
+    id: 'usr_01',
+    email: 'admin@example.com',
+    fullName: 'Alex Morgan',
+    role: 'admin',
+    createdAt: '2024-01-01T00:00:00Z',
+  },
+  {
+    id: 'usr_02',
+    email: 'user@example.com',
+    fullName: 'Jordan Lee',
+    role: 'user',
+    createdAt: '2024-03-15T00:00:00Z',
+  },
+  {
+    id: 'usr_03',
+    email: 'manager@example.com',
+    fullName: 'Sam Rivera',
+    role: 'manager',
+    createdAt: '2024-02-10T00:00:00Z',
+  },
+  {
+    id: 'usr_04',
+    email: 'viewer@example.com',
+    fullName: 'Taylor Kim',
+    role: 'viewer',
+    createdAt: '2024-04-01T00:00:00Z',
+  },
 ]
 
 let mockUsers = [...mockUserList]
 
 const mockDetails: Record<string, UserDetailDto> = {
-  usr_01: { id: 'usr_01', email: 'admin@example.com', firstName: 'Alex', lastName: 'Morgan', role: 'admin', avatarUrl: null, createdAt: '2024-01-01T00:00:00Z', lastLoginAt: new Date().toISOString() },
-  usr_02: { id: 'usr_02', email: 'user@example.com', firstName: 'Jordan', lastName: 'Lee', role: 'user', avatarUrl: null, createdAt: '2024-03-15T00:00:00Z', lastLoginAt: new Date().toISOString() },
-  usr_03: { id: 'usr_03', email: 'manager@example.com', firstName: 'Sam', lastName: 'Rivera', role: 'manager', avatarUrl: null, createdAt: '2024-02-10T00:00:00Z', lastLoginAt: null },
-  usr_04: { id: 'usr_04', email: 'viewer@example.com', firstName: 'Taylor', lastName: 'Kim', role: 'viewer', avatarUrl: null, createdAt: '2024-04-01T00:00:00Z', lastLoginAt: null },
+  usr_01: {
+    id: 'usr_01',
+    email: 'admin@example.com',
+    firstName: 'Alex',
+    lastName: 'Morgan',
+    role: 'admin',
+    avatarUrl: null,
+    createdAt: '2024-01-01T00:00:00Z',
+    lastLoginAt: new Date().toISOString(),
+  },
+  usr_02: {
+    id: 'usr_02',
+    email: 'user@example.com',
+    firstName: 'Jordan',
+    lastName: 'Lee',
+    role: 'user',
+    avatarUrl: null,
+    createdAt: '2024-03-15T00:00:00Z',
+    lastLoginAt: new Date().toISOString(),
+  },
+  usr_03: {
+    id: 'usr_03',
+    email: 'manager@example.com',
+    firstName: 'Sam',
+    lastName: 'Rivera',
+    role: 'manager',
+    avatarUrl: null,
+    createdAt: '2024-02-10T00:00:00Z',
+    lastLoginAt: null,
+  },
+  usr_04: {
+    id: 'usr_04',
+    email: 'viewer@example.com',
+    firstName: 'Taylor',
+    lastName: 'Kim',
+    role: 'viewer',
+    avatarUrl: null,
+    createdAt: '2024-04-01T00:00:00Z',
+    lastLoginAt: null,
+  },
 }
 
 // ─── API adapter ──────────────────────────────────────────────────────────────

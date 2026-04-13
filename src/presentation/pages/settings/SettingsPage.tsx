@@ -16,8 +16,7 @@ const SettingsPage: React.FC = () => {
     timezone: 'UTC',
   })
 
-  const toggle = (key: keyof typeof prefs) =>
-    setPrefs((p) => ({ ...p, [key]: !p[key] }))
+  const toggle = (key: keyof typeof prefs) => setPrefs((p) => ({ ...p, [key]: !p[key] }))
 
   const handleSave = () => {
     setSaved(true)
@@ -73,7 +72,10 @@ const SettingsPage: React.FC = () => {
           <SelectRow
             label="Language"
             value={prefs.language}
-            options={[{ value: 'en', label: 'English' }, { value: 'es', label: 'Español' }]}
+            options={[
+              { value: 'en', label: 'English' },
+              { value: 'es', label: 'Español' },
+            ]}
             onChange={(v) => setPrefs((p) => ({ ...p, language: v }))}
           />
           <SelectRow
@@ -108,10 +110,7 @@ const SettingsPage: React.FC = () => {
 
       {/* Save */}
       <div className="flex justify-end">
-        <Button
-          leftIcon={<Save className="h-4 w-4" />}
-          onClick={handleSave}
-        >
+        <Button leftIcon={<Save className="h-4 w-4" />} onClick={handleSave}>
           {saved ? 'Saved!' : 'Save preferences'}
         </Button>
       </div>
