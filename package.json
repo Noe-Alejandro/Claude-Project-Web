@@ -15,7 +15,8 @@
     "test:ui": "vitest --config vitest.config.ts --ui",
     "test:coverage": "vitest run --config vitest.config.ts --coverage",
     "type-check": "tsc --noEmit",
-    "pre-commit": "node scripts/pre-commit-check.mjs"
+    "quality": "node scripts/quality/index.mjs",
+    "pre-commit": "npm run quality"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

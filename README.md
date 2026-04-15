@@ -93,12 +93,13 @@ npm run test             # Vitest (watch mode)
 npm run test:ui          # Vitest UI
 npm run test:coverage    # Coverage report
 
-npm run pre-commit       # Full preflight: format + lint + types + GPU audit
+npm run quality          # Quality engine entry point
+npm run pre-commit       # Alias for the quality engine
 ```
 
-### `npm run pre-commit`
+### `npm run quality`
 
-This is a real Node.js script (`scripts/pre-commit-check.mjs`) that runs four checks in sequence and exits non-zero if anything fails. Run it before every commit — CI should run it too.
+This is the quality engine entry point (`scripts/quality/index.mjs`). It orchestrates the checks, normalizes issues, applies scoring, and exits non-zero if the repo is not ready. `npm run pre-commit` is just an alias to this command.
 
 | Check | What it validates |
 |---|---|

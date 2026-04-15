@@ -3,7 +3,7 @@ name: pre-commit
 description: >
   Pre-commit preflight check for this project. Run this before every commit.
   Triggers on: /pre-commit, "check before commit", "run preflight", "is the code ready to commit?".
-  Runs the real script at scripts/pre-commit-check.mjs which checks formatting,
+  Runs the real script at scripts/quality/index.mjs which checks formatting,
   lint, types, and CSS/GPU performance anti-patterns. Always use this skill before committing.
 ---
 
@@ -15,7 +15,7 @@ Run the script — it does everything:
 npm run pre-commit
 ```
 
-That's it. The script at `scripts/pre-commit-check.mjs` handles all four checks:
+That's it. The script at `scripts/quality/index.mjs` handles the quality checks:
 1. Prettier format check
 2. ESLint
 3. TypeScript (noEmit)
