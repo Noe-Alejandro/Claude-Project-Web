@@ -56,7 +56,7 @@ const MOCK_SESSION_KEY = '__mock_user_email__'
 
 const mockUsers: Record<string, { password: string; user: User }> = {
   'admin@example.com': {
-    password: 'password123',
+    password: 'Admin@123!',
     user: {
       id: 'usr_01',
       email: 'admin@example.com',
@@ -69,7 +69,7 @@ const mockUsers: Record<string, { password: string; user: User }> = {
     },
   },
   'user@example.com': {
-    password: 'password123',
+    password: 'User@123!',
     user: {
       id: 'usr_02',
       email: 'user@example.com',
