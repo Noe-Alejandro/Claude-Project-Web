@@ -22,7 +22,7 @@ export const Card: React.FC<CardProps> = ({
 }) => (
   <div
     className={cn(
-      'relative overflow-hidden rounded-2xl bg-[linear-gradient(180deg,_rgba(15,23,42,0.78),_rgba(15,23,42,0.6))] backdrop-blur-xl',
+      'relative overflow-hidden rounded-2xl bg-[linear-gradient(180deg,_rgba(15,23,42,0.92),_rgba(15,23,42,0.85))]',
       bordered && 'border border-white/[0.045] shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]',
       'shadow-[0_24px_80px_-38px_rgba(15,23,42,0.95)] before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.035),_transparent_42%)]',
       paddingStyles[padding],

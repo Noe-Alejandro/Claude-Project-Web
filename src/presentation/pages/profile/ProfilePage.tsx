@@ -254,7 +254,7 @@ const ProfilePage: React.FC = () => {
   return (
     <div className="min-h-full bg-[radial-gradient(circle_at_top_left,_rgba(192,38,211,0.18),_transparent_28%),radial-gradient(circle_at_80%_20%,_rgba(99,102,241,0.18),_transparent_26%),linear-gradient(180deg,_rgba(8,15,32,0.96),_rgba(3,7,18,1))] p-4 sm:p-6">
       <div className="mx-auto max-w-6xl space-y-6 animate-fade-in">
-        <div className="overflow-hidden rounded-[32px] border border-fuchsia-200/10 bg-slate-950/60 shadow-[0_30px_120px_-40px_rgba(147,51,234,0.85)] backdrop-blur-xl">
+        <div className="overflow-hidden rounded-[32px] border border-fuchsia-200/10 bg-slate-950/90 shadow-[0_30px_120px_-40px_rgba(147,51,234,0.85)]">
           <div className="relative overflow-hidden px-5 pb-6 pt-5 sm:px-8 sm:pt-8">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,_rgba(244,114,182,0.24),_transparent_22%),radial-gradient(circle_at_85%_10%,_rgba(129,140,248,0.24),_transparent_18%),radial-gradient(circle_at_50%_60%,_rgba(147,51,234,0.18),_transparent_30%)]" />
             <div className="absolute -left-12 top-12 h-44 w-44 rounded-full bg-fuchsia-500/10 blur-3xl" />
@@ -291,7 +291,7 @@ const ProfilePage: React.FC = () => {
                         </p>
                       </div>
 
-                      <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-right backdrop-blur-sm">
+                      <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-right">
                         <p className="text-[11px] uppercase tracking-[0.28em] text-fuchsia-100/60">
                           Level
                         </p>
@@ -316,7 +316,7 @@ const ProfilePage: React.FC = () => {
                       {collection.map((item) => (
                         <div
                           key={item.label}
-                          className="rounded-2xl border border-white/8 bg-white/[0.04] px-4 py-3 backdrop-blur-sm"
+                          className="rounded-2xl border border-white/8 bg-white/[0.04] px-4 py-3"
                         >
                           <div className="flex items-center gap-2 text-fuchsia-200">
                             {item.icon}

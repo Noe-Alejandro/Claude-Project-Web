@@ -112,8 +112,8 @@ export const AppLayout: React.FC = () => {
       <aside
         className={cn(
           'fixed inset-y-0 left-0 z-30 w-64 flex flex-col overflow-hidden',
-          'bg-[linear-gradient(180deg,_rgba(15,23,42,0.96),_rgba(12,18,34,0.98))] backdrop-blur-xl',
-          'transform transition-transform duration-300 ease-in-out',
+          'bg-[linear-gradient(180deg,_#0f172a,_#0c1222)]',
+          'transform transition-transform duration-300 ease-in-out will-change-transform',
           sidebarOpen ? 'translate-x-0' : '-translate-x-full',
           'lg:relative lg:translate-x-0',
         )}
@@ -259,7 +259,7 @@ export const AppLayout: React.FC = () => {
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top bar */}
-        <header className="sticky top-0 z-10 h-16 shrink-0 bg-slate-900/35 backdrop-blur-xl">
+        <header className="sticky top-0 z-10 h-16 shrink-0 bg-slate-900/80 backdrop-blur-sm">
           <SoftDivider />
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-[linear-gradient(180deg,_rgba(167,139,250,0.08),_transparent)] opacity-70" />
           <div className="flex h-full items-center gap-4 px-4 sm:px-6">
@@ -315,7 +315,7 @@ export const AppLayout: React.FC = () => {
                       setProfileMenuOpen(false)
                     }}
                   />
-                  <div className="absolute right-0 top-full mt-2 z-20 w-56 overflow-hidden rounded-xl border border-white/[0.05] bg-[linear-gradient(180deg,_rgba(15,23,42,0.95),_rgba(15,23,42,0.88))] shadow-glass animate-fade-in backdrop-blur-xl">
+                  <div className="absolute right-0 top-full mt-2 z-20 w-56 overflow-hidden rounded-xl border border-white/[0.05] bg-[linear-gradient(180deg,_rgba(15,23,42,0.97),_rgba(15,23,42,0.94))] shadow-glass animate-fade-in backdrop-blur-sm">
                     {/* User info header */}
                     <div className="relative px-4 py-3">
                       <div className="flex items-center gap-3">
